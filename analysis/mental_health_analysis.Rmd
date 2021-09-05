@@ -1,0 +1,21 @@
+---
+title: "Mental health Analysis"
+output: html_notebook
+---
+
+Load the required library(s)
+```{r}
+library(here)
+library(tidyverse)
+```
+
+Load the cleaning script
+```{r}
+source (here("data_cleaning_wrangling/mental_health.R"))
+```
+
+Load the cleaned data
+```{r}
+mental_health <- read_csv(here("clean_data/mental_health.csv"))
+```
+

@@ -1,0 +1,21 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(sf)
+library(leaflet)
+library(tidyverse)
+```
+
+```{r}
+dz11 <- read_sf("original_data/datazone2011/SG_DataZone_Bdry_2011.shp")
+```
+
+```{r}
+dz11 %>% 
+  leaflet() %>% 
+  addPolygons(data = dz11)
+```
+

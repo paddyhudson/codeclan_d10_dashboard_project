@@ -45,6 +45,17 @@ life_expectancy_clean <- life_expectancy_clean %>%
     "spc" = "Scottish Parliamentary Constituencies"
   ))
 
+# Create and append the aggregated data for all sexes
+life_expectancy_clean <- life_expectancy_clean %>%
+  arrange(feature_code, date_code, age) %>% 
+  mutate(le_value = (le_value + lag(le_value))/2,
+         le_lower_ci = (le_lower_ci + lag(le_lower_ci))/2,
+         le_upper_ci = (le_upper_ci + lag(le_upper_ci))/2,
+  ) %>% 
+  filter(sex == "Female") %>% 
+  mutate(sex = "All") %>% 
+  bind_rows(life_expectancy_clean)
+
 # Write the clean data ----------------------------------------------------
 
 # Write the cleaned data into clean_data/folder

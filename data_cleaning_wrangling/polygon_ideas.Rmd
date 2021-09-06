@@ -7,15 +7,54 @@ output: html_notebook
 library(sf)
 library(leaflet)
 library(tidyverse)
+library(rgdal)
 ```
 
 ```{r}
 dz11 <- read_sf("original_data/datazone2011/SG_DataZone_Bdry_2011.shp")
+
+dz11 <- st_transform(dz11, '+proj=longlat +datum=WGS84')
 ```
 
 ```{r}
-dz11 %>% 
+lookup <- lookup %>% select(-2)
+
+hb <- dz11 %>% 
+  left_join(lookup, by = c("DataZone" = "DZ2011_Code"))
+```
+
+```{r}
+hb %>%
+  filter(HB_Name == "Grampian") %>% 
   leaflet() %>% 
-  addPolygons(data = dz11)
+  addPolygons()
+```
+
+
+
+```{r}
+grampian <- hb %>% 
+  group_by(HB_Name) %>%
+  filter(HB_Name == "Grampian") %>%
+  summarise(geometry = st_union(st_make_valid(geometry))) %>% 
+  leaflet() %>%
+  addPolygons() %>% 
+  addTiles()
+
+grampian
+```
+
+```{r}
+hb_polygons <- hb %>% 
+  group_by(HB_Name) %>%
+  summarise(geometry = st_union(st_make_valid(geometry))) %>% 
+  ungroup()
+  
+```
+
+```{r}
+hb_polygons %>% 
+  leaflet() %>% 
+  addPolygons()
 ```
 

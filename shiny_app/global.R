@@ -7,5 +7,4 @@
 #--------------------------------------------------------------------------#
 
 source ("helper.R")
-
-#source("server_home.R")
+source("server_life_expectancy.R")

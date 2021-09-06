@@ -1,8 +1,29 @@
+#--------------------------------------------------------------------------#
+# UI script                                                                #
+#--------------------------------------------------------------------------#
+# Version         | Name        | Remarks                                  #
+#--------------------------------------------------------------------------#
+# 1.0             | Prathiba.R  | Initial Version                          #
+#--------------------------------------------------------------------------#
 
-ui <- dashboardPage(skin = "yellow",
-  dashboardHeader( disable = TRUE ),
+
+ui <- dashboardPage(
+  dashboardHeader(
+    ### changing logo
+    title = shinyDashboardLogo(
+      theme = "blue_gradient",
+      boldText = "SHS",
+      mainText = "App",
+      badgeText = "v1.0"
+    )
+  ),
   dashboardSidebar(disable = TRUE),
   dashboardBody(
+
+    ### changing theme
+    shinyDashboardThemes(
+      theme = "blue_gradient"
+    ),
     
     # css ---------------------------------------------------------------------
     
@@ -16,7 +37,7 @@ ui <- dashboardPage(skin = "yellow",
                                           }
                                           h2 {
                                             font-family: 'Acme', cursive;
-                                            color:#639fbf;
+                                            color:#000000;
                                           }
                                           h3 {
                                             font-family: 'Acme', cursive;
@@ -28,7 +49,7 @@ ui <- dashboardPage(skin = "yellow",
                                         .tabbable > .nav > li > a 
                                         {color:#000000}
                                         .tabbable > .nav > li[class=active] > a 
-                                        {background-color: #639fbf; color:white}
+                                        {background-color: #2f6773; color:white}
                                         .main-header .logo {
                                                             font-family: 'Georgia', Times, 'Times New Roman', serif;
                                                             font-weight: bold;
@@ -46,6 +67,7 @@ ui <- dashboardPage(skin = "yellow",
     
   box(title = tags$h1("Public Health Priorities for Scotland"), 
       width = 12,
+      background = "teal",
       tabsetPanel(id = "inTabset",
                  tabPanel(title  = tags$h3("Home"), value = "home_panel",
                                source("ui_home.R", local = TRUE)$value

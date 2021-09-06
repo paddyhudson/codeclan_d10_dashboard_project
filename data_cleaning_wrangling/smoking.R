@@ -42,14 +42,14 @@ smoking_clean <- smoking_clean %>%
   select(feature_code, name, type, date, smokes, household_type, sex,
          long_term_condition, age, smok_lower_ci, smok_upper_ci, smok_percent)
 
-# Rename the authority type
+# Rename the authority types & filter out unnecessary ones
 smoking_clean <- smoking_clean %>%
   mutate(type = recode(type,
                        "la" = "Local Authority",
                        "hb" = "NHS Health Board",
-                       "country" = "Scotland",
-                       "spc" = "Scottish Parliamentary Constituencies"
-  )) 
+                       "country" = "Scotland"
+  )) %>% 
+  filter(type == c("Local Authority", "NHS Health Board", "Scotland"))
 
 # Change 3 columns from List to Char type,so csv can be written
 smoking_clean <- smoking_clean %>% 

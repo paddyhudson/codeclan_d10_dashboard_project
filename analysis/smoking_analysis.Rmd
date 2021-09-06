@@ -1,0 +1,16 @@
+---
+title: "Smoking Analysis"
+output: html_notebook
+---
+
+```{r}
+# Load the library files
+library(here)
+library(tidyverse)
+```
+
+```{r}
+# Load the cleaning script
+source (here("data_cleaning_wrangling/smoking.R"))
+```
+

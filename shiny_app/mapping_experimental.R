@@ -21,16 +21,19 @@ le_filtered <- le %>%
   filter(
     date_code == "2017-2019" &
       age == 0 &
-      type == "NHS Health Board"
+      type == "NHS Health Board" &
+      sex == "All"
   )
-
-comp <- le_filtered %>% 
-  group_by(name) %>% 
-  summarise(mean = mean(le_value))
   
 #Join spatial data to health data
 
-hb_zones 
+map_data <- hb_zones %>% 
+  left_join(le_filtered, by = c("hb_code" = "feature_code")) %>% 
+  select(-name)
+
+#Create colour palette
+
+map_palette <- colorNumeric("plasma", domain = range(map_data$le_value))
   
 #Create map object with polygons and name popups
   
@@ -38,5 +41,6 @@ hb_map <- map_data %>%
   leaflet() %>% 
   #addTiles() %>% #uncomment this line to add background map
   addPolygons(
-    popup = ~hb_name,
+    popup = ~str_c(hb_name, le_value, sep = " "),
+    color = ~map_palette(le_value)
   )

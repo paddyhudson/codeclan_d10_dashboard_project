@@ -2,6 +2,18 @@
 title: "Life Expectancy Analysis"
 output: html_notebook
 ---
+
+```{r Revision History, message=FALSE, warning=FALSE, include=FALSE}
+#--------------------------------------------------------------------------#
+# Rmd file to load the clean data & generate the plots                     #
+#--------------------------------------------------------------------------#
+# Version         | Name        | Remarks                                  #
+#--------------------------------------------------------------------------#
+# 1.0             | Prathiba    | Data Cleaning & Loading the clean data   #
+# 1.1             | Derek       | Updated the plots                        #
+#--------------------------------------------------------------------------#
+```
+
 Load the library files
 ```{r}
 library(here)

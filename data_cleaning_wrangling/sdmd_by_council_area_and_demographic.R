@@ -80,6 +80,6 @@ sdmd_combined_plus_zones <- sdmd_combined_clean %>%
 
 # Write the cleaned data into clean_data/folder
 
-write_csv(sdmd_combined_plus_zones, "clean_data/sdmd_combined_plus_zones.csv")
+# write_csv(sdmd_combined_plus_zones, "clean_data/sdmd_combined_plus_zones.csv")
 
 # End of code -------------------------------------------------------------

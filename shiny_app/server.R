@@ -43,7 +43,7 @@ server <- function(input, output, session) {
       {input_table <- life_expectancy_clean }
     else{
       if(input$topic_input == "Drug Abuse")
-        {input_table <- sdmd_by_ca_and_demo_clean}
+        {input_table <- sdmd_combined_plus_zones}
       else 
         {input_table <- smoking_clean }
     }
@@ -117,6 +117,25 @@ server <- function(input, output, session) {
   
 # Server script for Drug Abuse ------------------------------------------
   
+        filtered_drugs_data <- reactive(
+          select_drug_data(input$breakdown_input,input$name_input,input$demographic_input )
+        )
+        
+          # Function to create ggplot
+          plot_drugs <- reactive(
+            plot_drugs_object(data = filtered_drugs_data(), input$breakdown_input)
+          )
+          
+          # create plot
+          output$distPlot <- renderPlot({
+            plot_drugs()
+          })
+        
+        # data table to show the data displayed in the life expectancy plot
+        output$output_table <- renderDataTable({
+          filtered_drugs_data()
+        })  
+        
 # Server script for Smoking  --------------------------------------------
   
 }

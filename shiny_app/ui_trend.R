@@ -6,6 +6,7 @@
 # 1.0             | Prathiba    | Initial Version                          #
 #--------------------------------------------------------------------------#
 
+library (shinyWidgets)
 
 ui <- fluidPage(
   #style = "background-color: #a6cbe3" ,
@@ -36,17 +37,23 @@ ui <- fluidPage(
       fluidRow(
         selectInput("breakdown_input",
                     "Select breakdown:",
-                    choices = c("Age", "Gender")
+                    choices = NULL
         )
       ),
-      
       fluidRow(
-          checkboxGroupInput("demographic_input",
-                             "Select one or more breakdown",
-                             choices = NULL,
-                             inline = TRUE)
-          ),
-       
+      dropdown(
+        label = "Select one or more breakdown", status = "default",
+        checkboxGroupInput("demographic_input",
+                           "",
+                           choices = NULL,
+                           inline = TRUE)
+      )
+      ),
+      fluidRow(tags$br()),
+      fluidRow(tags$br()),
+      fluidRow(
+        downloadButton(label ="Download", "download_report")
+      )
       ),
   mainPanel(
     #Content to display the plot

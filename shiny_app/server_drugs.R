@@ -5,7 +5,7 @@
 #--------------------------------------------------------------------------#
 # 1.0             | Prathiba.R  | Initial Version; Created function        #
 #                 |             | structure                                #
-# 1.1             | Derek       | Updated the contents of the function     #
+# 1.1             | JP          | Updated the contents of the function     #
 #--------------------------------------------------------------------------#
 
 # Function to select the data based on user choice
@@ -22,7 +22,7 @@ select_drug_data <- function(user_choice, input_name, input_demographic) {
         filter(!is.na(number_assessed)) %>% 
         arrange(year) %>% 
         group_by(year, age) %>% 
-        summarise(number_assessed_total = sum(number_assessed))
+        summarise(number_assessed_total = sum(number_assessed), .groups = "drop")
                # simd_quintiles == "All",
                # urban_rural_classification == "All"
         
@@ -41,7 +41,7 @@ select_drug_data <- function(user_choice, input_name, input_demographic) {
         filter(!is.na(number_assessed)) %>% 
         arrange(year) %>% 
         group_by(year, sex) %>% 
-        summarise(number_assessed_total = sum(number_assessed))
+        summarise(number_assessed_total = sum(number_assessed), .groups = "drop")
     }
 }
 

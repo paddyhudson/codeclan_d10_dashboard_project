@@ -48,7 +48,7 @@ smoking_clean <- smoking_clean %>%
                        "hb" = "NHS Health Board",
                        "country" = "Scotland"
   )) %>% 
-  filter(type == c("Local Authority", "NHS Health Board", "Scotland"))
+  filter(type %in% c("Local Authority", "NHS Health Board", "Scotland"))
 
 # Change all columns to char to remove List type for csv, change numeric values back to numeric type
 smoking_clean <- smoking_clean %>% 

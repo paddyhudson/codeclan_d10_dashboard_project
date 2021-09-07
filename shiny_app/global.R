@@ -8,4 +8,5 @@
 
 source ("helper.R")
 source("server_life_expectancy.R")
+source("server_drugs.R")
 source("server_helper.R")

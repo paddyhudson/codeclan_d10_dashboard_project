@@ -1,5 +1,8 @@
 #--------------------------------------------------------------------------
 # This script is to load and clean the life expectancy data.
+# Initial cleaning by Prathiba.
+# Years Vector added by Derek
+# Data aggregation for all sex by Paddy
 #--------------------------------------------------------------------------
 
 # Load the library --------------------------------------------------------
@@ -16,7 +19,7 @@ life_expectancy_clean <- read_csv(here("original_data/life_expectancy_raw_data.c
 
 # Data Cleaning -----------------------------------------------------------
 
-# Tidy the data and rename the colummn names
+# Tidy the data and rename the column names
 life_expectancy_clean <- life_expectancy_clean %>%
   pivot_wider(
     names_from = measurement,

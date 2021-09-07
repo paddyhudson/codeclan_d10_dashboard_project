@@ -1,0 +1,8 @@
+---
+title: "My Title"
+author: "My Name"
+output: html_document
+params:
+  data1: NA
+  data2: NA
+---

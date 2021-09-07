@@ -1,3 +1,13 @@
+#--------------------------------------------------------------------------#
+# Helper file which contains the functions to choose the inputs dynamically#
+# as a part of server script                                               #
+#--------------------------------------------------------------------------#
+# Version         | Name        | Remarks                                  #
+#--------------------------------------------------------------------------#
+# 1.0             | Prathiba    | Initial Version                          #
+# 1.1             | Derek       | Worked on area & name selection          #
+#--------------------------------------------------------------------------#
+
 
 choose_area <- function (topic_input)
   {
@@ -36,8 +46,22 @@ choose_name <- function (topic_input, area_input)
   name_selection <- input_table %>%
     filter(type %in% area_input) %>%
     distinct(name) %>% 
-    arrange(name)
+    arrange(name)  %>% 
+    flatten_chr()
   return (name_selection)
+}
+
+choose_breakdown_topic <- function(topic_input, break_down, area_input, name_input)
+{
+  if( topic_input == "Life Expectancy")
+  { choices <- c("Gender", "SIMD") }
+  else{
+    if(topic_input == "Drug Abuse")
+    {choices <- c("Gender", "Age")}
+    else 
+    {choices <- c("Gender", "Age", "Long Term Condition")}
+  }
+    return (choices)
 }
 
 choose_breakdown <- function(topic_input, break_down, area_input, name_input)
@@ -50,7 +74,7 @@ choose_breakdown <- function(topic_input, break_down, area_input, name_input)
     else 
     {input_table <- smoking_clean }
   }
-
+  
 if(break_down == "Age")
 {
   choices <- input_table %>%
@@ -59,7 +83,6 @@ if(break_down == "Age")
     distinct(age) %>% 
     arrange(age) %>% 
     flatten_chr()
-  
   return (choices)
 }
 if(break_down == "Gender"){
@@ -69,7 +92,7 @@ if(break_down == "Gender"){
     distinct(sex) %>% 
     arrange(sex) %>% 
     flatten_chr()
-  
   return (choices)
 }
+
 }

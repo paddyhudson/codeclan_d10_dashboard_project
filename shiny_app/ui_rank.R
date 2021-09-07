@@ -36,13 +36,14 @@ ui <- fluidPage(
       fluidRow(
         selectInput("rank_breakdown_input",
                     "Select breakdown:",
-                    choices = c("Age", "Gender")
+                    choices = NULL
         )
       ),
       
-      fluidRow(
+      dropdown(
+        label = "Select one or more breakdown", status = "default",
         checkboxGroupInput("rank_demographic_input",
-                           "Select one or more breakdown",
+                           "",
                            choices = NULL,
                            inline = TRUE)
       )

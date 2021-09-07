@@ -11,7 +11,8 @@ source(here("data_cleaning_wrangling/datazonelookup.R"))
 
 # Read the data file ------------------------------------------------------
 
-life_expectancy_clean <- read_csv(here("original_data/life_expectancy_raw_data.csv")) %>% clean_names()
+life_expectancy_clean <- read_csv(here("original_data/life_expectancy_raw_data.csv")) %>% 
+  clean_names()
 
 # Data Cleaning -----------------------------------------------------------
 
@@ -28,6 +29,7 @@ life_expectancy_clean <- life_expectancy_clean %>%
   )
 # Update the age column
 life_expectancy_clean <- life_expectancy_clean %>%
+  filter(age == "0 years") %>% 
   mutate(age = str_replace(age, " years", ""))
 
 # Lookup the Area name using data_zone_lookup_code

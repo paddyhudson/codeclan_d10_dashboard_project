@@ -17,7 +17,7 @@ ui <- fluidPage(
       fluidRow(
         selectInput("topic_input",
                     "Select topic",
-                    choices = c("Life Expectancy", "Drug abuse","Smoking")
+                    choices = c("Life Expectancy", "Drug Abuse","Smoking")
 
         )),
       fluidRow(

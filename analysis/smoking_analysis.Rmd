@@ -7,14 +7,17 @@ output: html_notebook
 # Load the library files
 library(here)
 library(tidyverse)
+library(lubridate)
 ```
 
 ```{r}
 # Load the cleaned data
-smoking <- read_csv(here("clean_data/smoking.csv"))
+smoking <- read_csv(here("clean_data/smoking.csv")) %>% 
+  mutate(person_id = row_number())
 ```
 
 ```{r}
+# Create Subset filtered by Health Board area
 smoking_by_health_board <- smoking %>% 
   select(name,
          type,
@@ -24,9 +27,39 @@ smoking_by_health_board <- smoking %>%
          age,
          sm_percent
   ) %>% 
-  filter(type == "NHS Health Board")
+  filter(type == "NHS Health Board")%>% 
+  mutate(person_id = row_number())
 ```
 
+```{r}
+# Create Subset filtered by Local Authority area
+smoking_by_council <- smoking %>% 
+  select(name,
+         type,
+         date_code,
+         smokes,
+         sex,
+         age,
+         sm_percent
+  ) %>% 
+  filter(type == "Local Authority")%>% 
+  mutate(person_id = row_number())
+```
+
+```{r}
+# Create Subset filtered by country area
+smoking_by_country <- smoking %>% 
+  select(name,
+         type,
+         date_code,
+         smokes,
+         sex,
+         age,
+         sm_percent
+  ) %>% 
+  filter(type == "Scotland")%>% 
+  mutate(person_id = row_number())
+```
 
 ```{r}
 # Smoking rates, per gender, over time, 
@@ -40,6 +73,57 @@ smoking_by_health_board %>%
   summarise(current_smokers = sum(smokes == "Yes")) %>% 
   ggplot(aes(x = date_code, y = current_smokers, group = sex, colour = sex)) +
   geom_point() +
-  geom_line()
+  geom_line() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+  labs(
+    x = "\nYear",
+    y = "Currently Smokes (%)\n",
+    colour = "Sex"
+  )
+```
+
+```{r}
+smoking_by_council %>%
+    filter(age == "All",
+           smokes == "Yes",
+           sex != "All") %>%
+  arrange(date_code) %>% 
+  group_by(date_code, sex) %>% 
+  summarise(current_smokers = sum(smokes == "Yes")) %>% 
+  ggplot(aes(x = date_code, y = current_smokers, group = sex, colour = sex)) +
+  geom_point() +
+  geom_line() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+  labs(
+    x = "\nYear",
+    y = "Currently Smokes (%)\n",
+    colour = "Sex"
+  )
+```
+
+```{r}
+smoking_by_council %>%
+    filter(age == "All",
+           smokes == "Yes",
+           sex != "All",
+           name == c("Glasgow City", "Scottish Borders")) %>%
+  arrange(name) %>% 
+  group_by(name) %>% 
+  summarise(current_smokers = sum(smokes == "Yes")) %>% 
+  ggplot(aes(x = date_code, y = current_smokers)) +
+  geom_bar() +
+  facet_wrap(name)
+```
+
+```{r}
+smoking_by_health_board %>%
+    filter(age != "All",
+           smokes == "Yes",
+           sex != "All") %>%
+  arrange(date_code) %>% 
+  group_by(date_code, sex) %>% 
+  summarise(current_smokers = sum(smokes == "Yes")) %>% 
+  ggplot(aes(x = date_code, y = current_smokers, group = sex, colour = sex)) +
+  geom_col()
 ```
 

@@ -34,7 +34,7 @@ ui <- fluidPage(
                               background-color: #a6cbe3; 
                               border-color: #ffffff",
                      inputId = 'jumpToTrend',
-                     label = tags$h2("Trend"), 
+                     label = tags$h1("Trend"), 
                      icon = icon("line-chart", "fa-3x"),
                      title="Explore how indicators change over Time",
                      button_animation = "bounce-in",
@@ -52,7 +52,7 @@ ui <- fluidPage(
                                 background-color: #e3a6a6; 
                                 border-color:  #ffffff",
                      inputId = 'jumpToRank',
-                     label = tags$h2("Rank"),
+                     label = tags$h1("Rank"),
                      icon = icon("bar-chart-o", "fa-3x"),
                      title = "Compare the indicators using Bar Chart" ,
                      button_animation = "bounce-in",
@@ -69,7 +69,7 @@ ui <- fluidPage(
                         background-color: #a6e3ac; 
                         border-color:  #ffffff",
                     inputId ='jumpToMap',
-                    label = tags$h2("Map"),
+                    label = tags$h1("Map"),
                     icon = icon("globe", "fa-3x"),
                     title = "Compare indicators between geographies using Map",
                     button_animation = "bounce-in",

@@ -4,8 +4,8 @@
 
 # cleaned by Derek H
 
-# Information on the number of individuals presenting for assessment at specialist drug 
-# treatment services in Scotland presented at council area and health board levels, 
+# Information on the number of individuals presenting for assessment at specialist drug
+# treatment services in Scotland presented at council area and health board levels,
 # broken down by age and sex.
 
 # Load the library --------------------------------------------------------
@@ -18,13 +18,13 @@ library(janitor)
 source(here("data_cleaning_wrangling/datazonelookup.R"))
 
 # local authority-level data
-sdmd_by_ca_and_demo_clean <- 
-  read_csv(here("original_data/sdmd_by_council_area_and_demographics.csv")) %>% 
+sdmd_by_ca_and_demo_clean <-
+  read_csv(here("original_data/sdmd_by_council_area_and_demographics.csv")) %>%
   clean_names()
 
 # health board-level data
-sdmd_by_hb_and_demo_clean <- 
-  read_csv(here("original_data/sdmd_by_health_board_and_demographics.csv")) %>% 
+sdmd_by_hb_and_demo_clean <-
+  read_csv(here("original_data/sdmd_by_health_board_and_demographics.csv")) %>%
   clean_names()
 
 # Data Cleaning -----------------------------------------------------------
@@ -32,12 +32,12 @@ sdmd_by_hb_and_demo_clean <-
 # rename the 'ca' (from the local authority-level data) and 'hbr' (from the health
 # board-level data) variables to 'feature_code' to enable joining.
 # remove qualifier variables ('caqf' and 'hbrqf') as not required for joining or analysis.
-sdmd_by_ca_and_demo_clean <- sdmd_by_ca_and_demo_clean %>% 
-  rename(feature_code = ca) %>% 
+sdmd_by_ca_and_demo_clean <- sdmd_by_ca_and_demo_clean %>%
+  rename(feature_code = ca) %>%
   select(-caqf)
 
-sdmd_by_hb_and_demo_clean <- sdmd_by_hb_and_demo_clean %>% 
-  rename(feature_code = hbr) %>% 
+sdmd_by_hb_and_demo_clean <- sdmd_by_hb_and_demo_clean %>%
+  rename(feature_code = hbr) %>%
   select(-hbrqf)
 
 # join both sdmd datasets to create one showing data for both local authorities
@@ -47,12 +47,12 @@ bind_rows(sdmd_by_ca_and_demo_clean, sdmd_by_hb_and_demo_clean)
 
 
 # join combined sdmd dataset with 'data_zone_lookup_code' dataset
-sdmd_combined_plus_zones <- sdmd_combined_clean %>% 
-  left_join(data_zone_lookup_code_names, by = c("feature_code" = "code")) %>% 
+sdmd_combined_plus_zones <- sdmd_combined_clean %>%
+  left_join(data_zone_lookup_code_names, by = c("feature_code" = "code")) %>%
   # rename variables to match data sets for other priority areas
-  rename(year = financial_year, age = age_group) %>% 
+  rename(year = financial_year, age = age_group) %>%
   # select relevant variables
-  select(feature_code, name, type, year, age, sex, number_assessed) %>% 
+  select(feature_code, name, type, year, age, sex, number_assessed) %>%
   # recode type column
   mutate(type = recode(type,
                        "la" = "Local Authority",
@@ -80,6 +80,6 @@ sdmd_combined_plus_zones <- sdmd_combined_clean %>%
 
 # Write the cleaned data into clean_data/folder
 
-# write_csv(sdmd_combined_plus_zones, "clean_data/sdmd_combined_plus_zones.csv")
+#write_csv(sdmd_combined_plus_zones, "clean_data/sdmd_combined_plus_zones.csv")
 
 # End of code -------------------------------------------------------------

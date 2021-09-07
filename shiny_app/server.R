@@ -10,7 +10,7 @@
 server <- function(input, output, session) {
 
 # Server for Home Page ------------------------------------------------------
-  
+
   observeEvent(input$jumpToTrend, {
     updateTabsetPanel(session, "inTabset",
                       selected = "trend_panel")
@@ -23,119 +23,133 @@ server <- function(input, output, session) {
     updateTabsetPanel(session, "inTabset",
                       selected = "map_panel")
   })
-  
+
   #This output variable is used in UI to display the plot title
-  
-  output$topic <- renderText({ input$topic_input})
-  output$area <- renderText({ input$area_input})
-  output$name <- renderText({ input$name_input})
-  output$demographic <- renderText({ input$demographic_input})
-  output$breakdown <- renderText({ input$breakdown_input})
-  
-  
-# Server script for Trend Page  ----------------------------------------------
+  #Multiple assignment for each tabset
 
-  # observeEvent to update area selection with local authorities and health boards
-  observeEvent(c(input$area_input, 
-                 input$topic_input), {
-    
-    if( input$topic_input == "Life Expectancy")
-      {input_table <- life_expectancy_clean }
-    else{
-      if(input$topic_input == "Drug Abuse")
-        {input_table <- sdmd_combined_plus_zones}
-      else 
-        {input_table <- smoking_clean }
-    }
-    
-    #Fetch Zone data dynamically
-    zone_selection <- input_table %>%
-      distinct(type) %>% 
-      filter(!(is.na(type))) %>% 
-      arrange(type)
-    
+    output$topic <- renderText({ input$topic_input})
+    output$area <- renderText({ input$area_input})
+    output$name <- renderText({ input$name_input})
+    output$demographic <- renderText({ input$demographic_input})
+    output$breakdown <- renderText({ input$breakdown_input})
+
+    output$rank_topic<- renderText({ input$rank_topic_input})
+    output$rank_area <- renderText({ input$rank_area_input})
+    output$rank_name <- renderText({ input$rank_name_input})
+    output$rank_demographic <- renderText({input$rank_demographic_input})
+    output$rank_breakdown  <- renderText({input$rank_breakdown_input})
+
+# Update Inputs for Trend Page  ----------------------------------------------
+    observeEvent( input$topic_input, {
+      updateSelectInput(
+        inputId = "area_input",
+        choices = choose_area(input$topic_input),
+        session = getDefaultReactiveDomain()
+      )
+    })
+    observeEvent(c( input$area_input,
+                    input$topic_input), {
+      updateSelectInput(
+        inputId = "name_input",
+        choices = choose_name(input$topic_input,input$area_input)$name,
+        session = getDefaultReactiveDomain()
+      )
+    })
+    observeEvent(c(input$breakdown_input,
+                   input$area_input,
+                   input$name_input,
+                   input$topic_input), {
+
+                     choice <- choose_breakdown( input$topic_input,
+                                                 input$breakdown_input,
+                                                 input$area_input,
+                                                 input$name_input )
+
+                     updateCheckboxGroupInput(session = session,
+                                              inputId = "demographic_input",
+                                              choices = choice,
+                                              selected = choice,
+                                              inline = TRUE
+                     )
+                   })
+
+    # Update Inputs for Rank Page  ----------------------------------------------
+  observeEvent( input$rank_topic_input, {
     updateSelectInput(
-      inputId = "area_input",
-      choices = zone_selection$type,
-      session = getDefaultReactiveDomain()
-    )
-    
-    #Fetch Region data dynamically
-    area_selection <- input_table %>%
-      filter(type == input$area_input) %>%
-      distinct(name) %>% 
-      arrange(name)
-    
-    updateSelectInput(
-      inputId = "name_input",
-      choices = area_selection$name,
-      session = getDefaultReactiveDomain()
-    )
-
+          inputId = "rank_area_input",
+          choices = choose_area(input$rank_topic_input),
+          session = getDefaultReactiveDomain()
+        )
+      })
+  observeEvent(c( input$rank_area_input,
+                    input$rank_topic_input), {
+  updateSelectInput(
+    inputId = "rank_name_input",
+    choices = choose_name(input$rank_topic_input,input$rank_area_input)$name,
+    session = getDefaultReactiveDomain()
+  )
   })
+  # Event to populate the choices of breakdown dynamically
+  observeEvent(c(input$rank_breakdown_input,
+                  input$rank_area_input,
+                  input$rank_name_input,
+                  input$rank_topic_input), {
 
-  #The breakdown choices are listed dynamically
-  choices_demographic_input <- reactive({
-    if(input$breakdown_input == "Age")
-    {
-      choices_demographic_input <- unique(sort(life_expectancy_clean$age))
-    }
-    else{
-      choices_demographic_input <- unique(sort(life_expectancy_clean$sex))
-    }
+      choice <- choose_breakdown(input$rank_topic_input,
+                                 input$rank_breakdown_input,
+                                 input$rank_area_input,
+                                 input$rank_name_input )
 
-  })
-  # Update the breakdown type dynamically
-  observe({
-    updateCheckboxGroupInput(session = session,
-                             inputId = "demographic_input",
-                             choices = choices_demographic_input(),
-                             selected = max(choices_demographic_input()),
-                             inline = TRUE
-    )
-  })
+      updateCheckboxGroupInput(session = session,
+                         inputId = "rank_demographic_input",
+                         choices = choice,
+                         selected = choice,
+                         inline = TRUE
+                    )
+                  })
+
   # Server script for life expectancy -------------------------------------
-  
+
         filtered_data <- reactive(
           select_life_data(input$breakdown_input,input$name_input,input$demographic_input )
         )
-        
+
         # Function to create ggplot
         plot <- reactive(
           plot_life_object(data = filtered_data(), input$breakdown_input)
         )
-        
+
         # create plot
         output$distPlot <- renderPlot({
           plot()
         })
-        
+
         # data table to show the data displayed in the life expectancy plot
         output$output_table <- renderDataTable({
           filtered_data()
-        })  
-  
+        })
+
 # Server script for Drug Abuse ------------------------------------------
-  
+
         filtered_drugs_data <- reactive(
           select_drug_data(input$breakdown_input,input$name_input,input$demographic_input )
         )
-        
+
           # Function to create ggplot
           plot_drugs <- reactive(
             plot_drugs_object(data = filtered_drugs_data(), input$breakdown_input)
           )
-          
+
           # create plot
           output$distPlot <- renderPlot({
             plot_drugs()
           })
-        
+
         # data table to show the data displayed in the life expectancy plot
         output$output_table <- renderDataTable({
           filtered_drugs_data()
-        })  
-        
+        })
+
 # Server script for Smoking  --------------------------------------------
-  
+
 }

@@ -27,6 +27,20 @@ smoking_by_health_board <- smoking %>%
   filter(type == "NHS Health Board")
 ```
 
+```{r}
+smoking %>% 
+  filter(type == "Local Authority",
+         date_code == "2013",
+         age == "All",
+         sex == "All",
+         long_term_condition == "All",
+         household_type == "All") %>% 
+  ggplot() +
+  aes(x = name, y = sm_percent, fill = smokes) +
+  geom_col() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
+```
+
 
 ```{r}
 # Smoking rates, per gender, over time, 

@@ -35,10 +35,11 @@ smoking_by_health_board %>%
     filter(age == "All",
            smokes == "Yes",
            sex != "All") %>%
-  ggplot() +
-  aes(x = date_code , y = sex, colour = sex) +
+  arrange(date_code) %>% 
+  group_by(date_code, sex) %>% 
+  summarise(current_smokers = sum(smokes == "Yes")) %>% 
+  ggplot(aes(x = date_code, y = current_smokers, group = sex, colour = sex)) +
   geom_point() +
   geom_line()
- 
 ```
 

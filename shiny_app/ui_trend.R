@@ -3,13 +3,13 @@
 #--------------------------------------------------------------------------#
 # Version         | Name        | Remarks                                  #
 #--------------------------------------------------------------------------#
-# 1.0             |             | Initial Version                          #
+# 1.0             | Prathiba    | Initial Version                          #
 #--------------------------------------------------------------------------#
 
 
 ui <- fluidPage(
   #style = "background-color: #a6cbe3" ,
-  titlePanel(tags$h2("Trend")),
+  #titlePanel(tags$h2("Trend")),
   
   sidebarLayout(
     sidebarPanel(#style = "background-color: #a6cbe3" ,
@@ -23,14 +23,14 @@ ui <- fluidPage(
       fluidRow(
         selectInput("area_input",
                     "Select Data Zone",
-                    choices = unique(sort(life_expectancy_clean$type))
+                    choices = NULL
                     
         )),
       
       fluidRow(
         selectInput("name_input",
                     "Select Region:",
-                    choices = c("Scotland")
+                    choices = NULL
         ),
       ),
       fluidRow(
@@ -45,7 +45,8 @@ ui <- fluidPage(
                              "Select one or more breakdown",
                              choices = NULL,
                              inline = TRUE)
-          )
+          ),
+       
       ),
   mainPanel(
     #Content to display the plot

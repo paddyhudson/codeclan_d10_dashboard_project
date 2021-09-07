@@ -28,19 +28,19 @@ ui <- dashboardPage(
     # css ---------------------------------------------------------------------
     
     tags$head(
-      tags$style(HTML(" @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@1,600&display=swap');
+      tags$style(HTML(" @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@1,600&family=Mirza&family=Cookie&display=swap');
                                           body {
                                           }
                                           h1 {
-                                            font-family: 'Crimson Text', serif;
+                                            font-family: 'Cookie', serif;
                                             color:639fbf;
                                           }
                                           h2 {
-                                            font-family: 'Acme', cursive;
+                                            font-family: 'Crimson Text', cursive;
                                             color:#000000;
                                           }
                                           h3 {
-                                            font-family: 'Acme', cursive;
+                                            font-family: 'Mirza', cursive;
                                             color:#000000;
                                           }
                                           .shiny-input-container {
@@ -69,17 +69,17 @@ ui <- dashboardPage(
       width = 12,
       background = "teal",
       tabsetPanel(id = "inTabset",
-                 tabPanel(title  = tags$h3("Home"), value = "home_panel",
+                 tabPanel(title  = tags$h2("Home"), value = "home_panel",
                                source("ui_home.R", local = TRUE)$value
                            ),
-                 tabPanel(title = tags$h3("Trend", icon = icon("bar-chart-o")),
+                 tabPanel(title = tags$h2("Trend", icon = icon("bar-chart-o")),
                           value = "trend_panel", 
                           source("ui_trend.R", local = TRUE)$value),
-                 tabPanel(title = tags$h3("Rank"), value = "rank_panel" ,
+                 tabPanel(title = tags$h2("Rank"), value = "rank_panel" ,
                           source("ui_rank.R", local = TRUE)$value),
-                 tabPanel(title = tags$h3("Map"),value = "map_panel",  
+                 tabPanel(title = tags$h2("Map"),value = "map_panel",  
                           source("ui_map.R", local = TRUE)$value),
-                 tabPanel(title = tags$h3("About"),value = "about_panel",  
+                 tabPanel(title = tags$h2("About"),value = "about_panel",  
                           source("ui_about.R", local = TRUE)$value)
                )
    

@@ -6,7 +6,7 @@ choose_area <- function (topic_input)
      {input_table <- life_expectancy_clean }
      else{
        if(topic_input == "Drug Abuse")
-       {input_table <- sdmd_by_ca_and_demo_clean}
+       {input_table <- sdmd_combined_plus_zones}
        else 
        {input_table <- smoking_clean }
      }
@@ -27,7 +27,7 @@ choose_name <- function (topic_input, area_input)
   {input_table <- life_expectancy_clean }
   else{
     if(topic_input == "Drug Abuse")
-    {input_table <- sdmd_by_ca_and_demo_clean}
+    {input_table <- sdmd_combined_plus_zones}
     else 
     {input_table <- smoking_clean }
   }
@@ -46,7 +46,7 @@ choose_breakdown <- function(topic_input, break_down, area_input, name_input)
   {input_table <- life_expectancy_clean }
   else{
     if(topic_input == "Drug Abuse")
-    {input_table <- sdmd_by_ca_and_demo_clean}
+    {input_table <- sdmd_combined_plus_zones}
     else 
     {input_table <- smoking_clean }
   }

@@ -17,20 +17,20 @@ ui <- fluidPage(
       fluidRow(
         selectInput("rank_topic_input",
                     "Select topic",
-                    choices = c("Life Expectancy", "Drug abuse","Smoking")
+                    choices = c("Life Expectancy", "Drug Abuse","Smoking")
                     
         )),
       fluidRow(
         selectInput("rank_area_input",
                     "Select Data Zone",
-                    choices = unique(sort(life_expectancy_clean$type))
+                    choices = NULL
                     
         )),
       
       fluidRow(
         selectInput("rank_name_input",
                     "Select Region:",
-                    choices = c("Scotland")
+                    choices = NULL
         ),
       ),
       fluidRow(

@@ -68,9 +68,11 @@ i.e. Rank
 ```{r}
 
 drugs_rank_la <- drugs %>% 
-  filter(type == "Local Authority") %>% 
-  filter(number_assessed != 0) %>%
-  filter(!is.na(number_assessed)) %>%
+  filter(type == "Local Authority" &
+         sex == "All" &
+         # age_group ==   &
+         number_assessed != 0 &
+         !is.na(number_assessed)) %>% 
   group_by(name) %>% 
   summarise(number_assessed_total = sum(number_assessed)) %>% 
   ggplot(aes(x = name, y = number_assessed_total)) +

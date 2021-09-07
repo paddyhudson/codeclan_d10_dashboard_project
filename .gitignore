@@ -2,3 +2,6 @@
 .Rhistory
 .RData
 .DStore
+data_cleaning_wrangling/data_cleaning_wrangling.Rproj
+shiny_app/shiny_app.Rproj
+clean_data/clean_data.Rproj

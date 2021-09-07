@@ -1,12 +1,11 @@
 #--------------------------------------------------------------------------#
-# An app to analyse the Scottish Health Data                               #
+# UI for Trend Page                                                        #
 #--------------------------------------------------------------------------#
 # Version         | Name        | Remarks                                  #
 #--------------------------------------------------------------------------#
-# 1.0             | Prathiba.R  | Initial Version                          #
+# 1.0             |             | Initial Version                          #
 #--------------------------------------------------------------------------#
 
-source ("helper.R")
-source("server_life_expectancy.R")
-source("server_drugs.R")
-source("server_helper.R")
+ui <- fluidPage(
+  titlePanel(tags$h2("About"))
+)

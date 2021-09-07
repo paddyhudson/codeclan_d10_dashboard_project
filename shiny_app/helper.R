@@ -4,16 +4,21 @@
 #--------------------------------------------------------------------------#
 # Version         | Name        | Remarks                                  #
 #--------------------------------------------------------------------------#
-# 1.0             |             | Initial Version                          #
+# 1.0             | Prathiba    | Initial Version                          #
 #--------------------------------------------------------------------------#
 
 library(shiny)
 library(shinydashboard)
 library(shinythemes)
+library(dashboardthemes)
+library(hover)
 library(here)
 library(tidyverse)
 library(ggplot2)
 library(RColorBrewer)
+library(shinyBS)
+
+source (here("analysis/load_clean_data.R"))
 
 color_theme <- function() {
   theme(
@@ -26,10 +31,9 @@ color_theme <- function() {
     panel.background = element_rect(fill = "white"),
     panel.grid =  element_line(colour = "grey85", linetype = 1, size = 0.5),
     
-    axis.text = element_text(colour = "blue", face = "italic", size = 10),
-    axis.title = element_text(colour = "orange" , face = "bold", size = 12),
-    axis.title.y = element_text(colour = "#1B732B" ,  size = 12, angle = 90),
-    axis.title.x = element_text(colour = "#1B732B" ,  size = 12),
+    axis.text = element_text(colour = "blue", face = "italic", size = 12),
+    axis.title.y = element_text(colour = "#1B732B" ,  size = 14, angle = 90),
+    axis.title.x = element_text(colour = "#1B732B" ,  size = 14),
     
     
     legend.box.background = element_rect(),

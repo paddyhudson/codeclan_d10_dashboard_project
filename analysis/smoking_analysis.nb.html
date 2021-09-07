@@ -226,15 +226,48 @@ library(tidyverse)</code></pre>
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBMb2FkIHRoZSBjbGVhbmluZyBzY3JpcHRcbnNvdXJjZSAoaGVyZShcImRhdGFfY2xlYW5pbmdfd3JhbmdsaW5nL3Ntb2tpbmcuUlwiKSlcbmBgYCJ9 -->
-<pre class="r"><code># Load the cleaning script
-source (here(&quot;data_cleaning_wrangling/smoking.R&quot;))</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBMb2FkIHRoZSBjbGVhbmVkIGRhdGFcbnNtb2tpbmcgPC0gcmVhZF9jc3YoaGVyZShcImNsZWFuX2RhdGEvc21va2luZy5jc3ZcIikpXG5gYGAifQ== -->
+<pre class="r"><code># Load the cleaned data
+smoking &lt;- read_csv(here(&quot;clean_data/smoking.csv&quot;))</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc21va2luZ19ieV9oZWFsdGhfYm9hcmQgPC0gc21va2luZyAlPiUgXG4gIHNlbGVjdChuYW1lLFxuICAgICAgICAgdHlwZSxcbiAgICAgICAgIGRhdGVfY29kZSxcbiAgICAgICAgIHNtb2tlcyxcbiAgICAgICAgIHNleCxcbiAgICAgICAgIGFnZSxcbiAgICAgICAgIHNtX3BlcmNlbnRcbiAgKSAlPiUgXG4gIGZpbHRlcih0eXBlID09IFwiTkhTIEhlYWx0aCBCb2FyZFwiKVxuYGBgIn0= -->
+<pre class="r"><code>smoking_by_health_board &lt;- smoking %&gt;% 
+  select(name,
+         type,
+         date_code,
+         smokes,
+         sex,
+         age,
+         sm_percent
+  ) %&gt;% 
+  filter(type == &quot;NHS Health Board&quot;)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBTbW9raW5nIHJhdGVzLCBwZXIgZ2VuZGVyLCBvdmVyIHRpbWUsIFxuXG5zbW9raW5nX2J5X2hlYWx0aF9ib2FyZCAlPiVcbiAgICBmaWx0ZXIoYWdlID09IFwiQWxsXCIsXG4gICAgICAgICAgIHNtb2tlcyA9PSBcIlllc1wiLFxuICAgICAgICAgICBzZXggIT0gXCJBbGxcIikgJT4lXG4gIGdncGxvdCgpICtcbiAgYWVzKHggPSBkYXRlX2NvZGUgLCB5ID0gc2V4LCBjb2xvdXIgPSBzZXgpICtcbiAgZ2VvbV9wb2ludCgpICtcbiAgZ2VvbV9saW5lKClcbiBcbmBgYCJ9 -->
+<pre class="r"><code># Smoking rates, per gender, over time, 
+
+smoking_by_health_board %&gt;%
+    filter(age == &quot;All&quot;,
+           smokes == &quot;Yes&quot;,
+           sex != &quot;All&quot;) %&gt;%
+  ggplot() +
+  aes(x = date_code , y = sex, colour = sex) +
+  geom_point() +
+  geom_line()
+ </code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIlNtb2tpbmcgQW5hbHlzaXMiDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCi0tLQ0KDQpgYGB7cn0NCiMgTG9hZCB0aGUgbGlicmFyeSBmaWxlcw0KbGlicmFyeShoZXJlKQ0KbGlicmFyeSh0aWR5dmVyc2UpDQpgYGANCg0KYGBge3J9DQojIExvYWQgdGhlIGNsZWFuaW5nIHNjcmlwdA0Kc291cmNlIChoZXJlKCJkYXRhX2NsZWFuaW5nX3dyYW5nbGluZy9zbW9raW5nLlIiKSkNCmBgYA0KDQo=</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIlNtb2tpbmcgQW5hbHlzaXMiDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCi0tLQ0KDQpgYGB7cn0NCiMgTG9hZCB0aGUgbGlicmFyeSBmaWxlcw0KbGlicmFyeShoZXJlKQ0KbGlicmFyeSh0aWR5dmVyc2UpDQpgYGANCg0KYGBge3J9DQojIExvYWQgdGhlIGNsZWFuZWQgZGF0YQ0Kc21va2luZyA8LSByZWFkX2NzdihoZXJlKCJjbGVhbl9kYXRhL3Ntb2tpbmcuY3N2IikpDQpgYGANCg0KYGBge3J9DQpzbW9raW5nX2J5X2hlYWx0aF9ib2FyZCA8LSBzbW9raW5nICU+JSANCiAgc2VsZWN0KG5hbWUsDQogICAgICAgICB0eXBlLA0KICAgICAgICAgZGF0ZV9jb2RlLA0KICAgICAgICAgc21va2VzLA0KICAgICAgICAgc2V4LA0KICAgICAgICAgYWdlLA0KICAgICAgICAgc21fcGVyY2VudA0KICApICU+JSANCiAgZmlsdGVyKHR5cGUgPT0gIk5IUyBIZWFsdGggQm9hcmQiKQ0KYGBgDQoNCg0KYGBge3J9DQojIFNtb2tpbmcgcmF0ZXMsIHBlciBnZW5kZXIsIG92ZXIgdGltZSwgDQoNCnNtb2tpbmdfYnlfaGVhbHRoX2JvYXJkICU+JQ0KICAgIGZpbHRlcihhZ2UgPT0gIkFsbCIsDQogICAgICAgICAgIHNtb2tlcyA9PSAiWWVzIiwNCiAgICAgICAgICAgc2V4ICE9ICJBbGwiKSAlPiUNCiAgZ2dwbG90KCkgKw0KICBhZXMoeCA9IGRhdGVfY29kZSAsIHkgPSBzZXgsIGNvbG91ciA9IHNleCkgKw0KICBnZW9tX3BvaW50KCkgKw0KICBnZW9tX2xpbmUoKQ0KIA0KYGBgDQoNCg==</div>
 
 
 

@@ -10,7 +10,35 @@ library(tidyverse)
 ```
 
 ```{r}
-# Load the cleaning script
-source (here("data_cleaning_wrangling/smoking.R"))
+# Load the cleaned data
+smoking <- read_csv(here("clean_data/smoking.csv"))
+```
+
+```{r}
+smoking_by_health_board <- smoking %>% 
+  select(name,
+         type,
+         date_code,
+         smokes,
+         sex,
+         age,
+         sm_percent
+  ) %>% 
+  filter(type == "NHS Health Board")
+```
+
+
+```{r}
+# Smoking rates, per gender, over time, 
+
+smoking_by_health_board %>%
+    filter(age == "All",
+           smokes == "Yes",
+           sex != "All") %>%
+  ggplot() +
+  aes(x = date_code , y = sex, colour = sex) +
+  geom_point() +
+  geom_line()
+ 
 ```
 

@@ -9,4 +9,3 @@
 source ("helper.R")
 source("server_life_expectancy.R")
 
-# test

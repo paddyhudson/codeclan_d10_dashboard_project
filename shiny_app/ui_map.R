@@ -17,29 +17,32 @@ ui <- fluidPage(
       #Input the Topic
       fluidRow(
         selectInput("map_topic_input",
-                    "Select topic",
+                    "Select Topic",
                     choices = c("Life Expectancy", "Drug Abuse","Smoking")
                     
         )),
       fluidRow(
         selectInput("map_area_input",
-                    "Select Data Zone",
+                    "Select Data Zones",
                     choices = c("NHS Health Board", "Local Authority")
-                    
         )),
       fluidRow(
         selectInput("map_breakdown_input",
-                    "Select breakdown:",
-                    choices = c("All", "Age", "Gender")
-        )
-      ),
+                    "Select Breakdown:",
+                    choices = c("None", "Age", "Gender")
+        )),
+      fluidRow(
+        selectInput("map_group_input",
+                      "Select Group:",
+                      choices = NULL
+        )),
       fluidRow(tags$br()),
       fluidRow(tags$br())
     ),
     mainPanel(width = 9,
       #Content to display the map
       fluidRow(
-        leafletOutput("my_map")
+        leafletOutput("my_map", height = 620)
       ),
       #Content to display the table
       fluidRow(style = "padding-top: 2%",

@@ -150,24 +150,26 @@ server <- function(input, output, session) {
 
 # Server script for plots & table -------------------------------------
 
-  filtered_data <- reactive(
-      select_data(input$breakdown_input,input$name_input,input$demographic_input, input$topic_input)
-    )
-
-    # Function to create ggplot
-    plot <- reactive(
-      plot_object(data = filtered_data(), input$breakdown_input, input$topic_input)
-    )
-
-    # create plot
-    output$distPlot <- renderPlot({
-      plot()
-    })
+  # filtered_data <- reactive(
+  #     select_data(input$breakdown_input,input$name_input,input$demographic_input, input$topic_input)
+  #   )
+  # 
+  #   # Function to create ggplot
+  #   plot <- reactive(
+  #     plot_object(data = filtered_data(), input$breakdown_input, input$topic_input)
+  #   )
+  # 
+  #   # create plot
+  #   output$distPlot <- renderPlot({
+  #     plot()
+  #   })
+  #   
+  #   # data table to show the data displayed in the life expectancy plot
+  #   output$output_table <- renderDataTable({
+  #     filtered_data()
+  #   })
     
-    # data table to show the data displayed in the life expectancy plot
-    output$output_table <- renderDataTable({
-      filtered_data()
-    })
+  
 
 # Server script for Smoking  --------------------------------------------
 

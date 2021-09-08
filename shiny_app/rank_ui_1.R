@@ -14,6 +14,7 @@ ui <- fluidPage(
     
     sidebarPanel(
       
+      # these are now aligned with the repo app ui_rank
       selectInput("rank_topic_input",
                   "Select topic",
                   choices = c("Life Expectancy", "Drug Abuse", "Smoking")
@@ -29,17 +30,19 @@ ui <- fluidPage(
                   choices = c("All", "Male", "Female")
       ),
       
-      radioButtons("select_input",
-                   "Selection",
-                   choices = c("Top 5 Areas", "Bottom 5 Areas"))
+      selectInput("select_input",
+                  "Selection",
+                  choices = c("Top 5 Areas", "Bottom 5 Areas")
+                  
+      ),
       
-    ),
-    
-    mainPanel(
-      
-      plotOutput("distPlot"),
-      
-      tableOutput("dataTable")
+      mainPanel(
+        
+        plotOutput("rank_distPlot"),
+        
+        tableOutput("dataTable")
+        
+      )
       
     )
     
@@ -80,7 +83,7 @@ server <- function(input, output, session) {
       arrange(desc(sm_percent))
   })
   
-  output$distPlot <- renderPlot({
+  output$rank_distPlot <- renderPlot({
     
     if (input$rank_topic_input == "Life Expectancy" &
         input$select_input == "Top 5 Areas"){
@@ -199,7 +202,7 @@ server <- function(input, output, session) {
     
   })
   
-  output$dataTable <- renderTable({
+  output$rank_output_table <- renderTable({
     
     if (input$rank_topic_input == "Life Expectancy" &
         input$select_input == "Top 5 Areas"){

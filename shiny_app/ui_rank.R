@@ -70,7 +70,7 @@ ui <- fluidPage(
         box(
           width = 12,
           title = tags$h3("Table"),
-          dataTableOutput("rank_output_table")
+          tableOutput("rank_output_table")
         )
       )
       

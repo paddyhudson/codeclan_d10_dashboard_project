@@ -38,7 +38,7 @@ smoking_clean <- smoking_clean %>%
 # Lookup the Area name using data_zone_lookup_code
 smoking_clean <- smoking_clean %>%
   left_join(data_zone_lookup_code_names, by = c("feature_code" = "code")) %>%
-  select(feature_code, name, type, date_code, smokes, household_type, sex,
+  select(feature_code, name, type, date_code, smokes, type_of_tenure, household_type, sex,
          long_term_condition, age, sm_lower_ci, sm_upper_ci, sm_percent)
 
 # Rename the authority types & filter out unnecessary ones

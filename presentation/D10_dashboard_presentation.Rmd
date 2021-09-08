@@ -1,0 +1,130 @@
+---
+title: "D10 Dashboard Project - Public Health Priorities"
+author: "D10 Data Solutions"
+date: "09/09/2021"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## R Markdown
+
+This is an R Markdown presentation. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document.
+
+## Slide with Bullets
+
+- Bullet 1
+- Bullet 2
+- Bullet 3
+
+## Slide with R Output
+
+```{r cars, echo = TRUE}
+summary(cars)
+```
+
+## Slide with Plot
+
+```{r pressure}
+plot(pressure)
+```
+
+# Title Page
+
+
+
+# Introduction | Jonathan
+
+## The Brief
+
+## The Team
+
+## Structure of presentation
+
+
+
+# Key findings - Life expectancy | Derek
+
+## The data
+- Data set used
+- Source
+- Why it was chosen
+
+## Trend
+- Overview
+- Plot
+- Findings / key demographic for business to focus on
+
+## Rank
+- Overview
+- Plot
+- Findings / key areas for business to focus on / disparity between areas
+
+## Map
+- Overview
+- Plot
+- Findings / key areas for business to focus on
+
+
+
+# Key findings - Smoking | John Paul
+
+## The data
+- Data set used
+- Source
+- Why it was chosen
+
+## Trend
+- Overview
+- Plot
+- Findings / key demographic for business to focus on
+
+## Rank
+- Overview
+- Plot
+- Findings / key areas for business to focus on / disparity between areas
+
+## Map
+- Overview
+- Plot
+- Findings / key areas for business to focus on
+
+
+
+# Key findings - Drug abuse | Jonathan
+
+## The data
+- Data set used
+- Source
+- Why it was chosen
+
+## Trend
+- Overview
+- Plot
+- Findings / key demographic for business to focus on
+
+## Rank
+- Overview
+- Plot
+- Findings / key areas for business to focus on / disparity between areas
+
+## Map
+- Overview
+- Plot
+- Findings / key areas for business to focus on
+
+
+
+# Dashboard Demonstration | Prathiba & Paddy
+
+
+
+## Conclusion | TBC
+- Recap brief
+- Recap of the main focus points for each of the three areas
+
+# Questions

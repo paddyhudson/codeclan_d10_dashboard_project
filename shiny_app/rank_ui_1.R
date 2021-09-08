@@ -14,13 +14,13 @@ ui <- fluidPage(
     
     sidebarPanel(
       
-      selectInput("health_input",
-                  "Select Data",
-                  choices = c("Life Expectancy", "Drug Misuse", "Smoking")
+      selectInput("rank_topic_input",
+                  "Select topic",
+                  choices = c("Life Expectancy", "Drug Abuse", "Smoking")
       ),
       
-      selectInput("datazone_input",
-                  "Area",
+      selectInput("rank_area_input",
+                  "Select Data Zone",
                   choices = c("Local Authority", "NHS Health Board")
       ),
       
@@ -51,7 +51,7 @@ server <- function(input, output, session) {
   
   # filtered data for life expectancy plots
   filtered_data_le <-reactive({life_expectancy %>% 
-      filter(type == input$datazone_input,
+      filter(type == input$rank_area_input,
              simd_quintiles == "All",
              urban_rural_classification == "All",
              date_code == "2017-2019",
@@ -62,7 +62,7 @@ server <- function(input, output, session) {
   
   # filtered data for drug misuse plots
   filtered_data_dm <- reactive({drug_data %>%
-      filter(type == input$datazone_input,
+      filter(type == input$rank_area_input,
              year == "2018/19",
              sex == input$sex_input) %>%
       arrange(desc(number_assessed)) 
@@ -70,7 +70,7 @@ server <- function(input, output, session) {
   
   # filtered data for smoking plots
   filtered_data_sm <- reactive({smoking %>%
-      filter(type == input$datazone_input,
+      filter(type == input$rank_area_input,
              date_code == "2019",
              sex == input$sex_input,
              household_type == "All",
@@ -82,7 +82,7 @@ server <- function(input, output, session) {
   
   output$distPlot <- renderPlot({
     
-    if (input$health_input == "Life Expectancy" &
+    if (input$rank_topic_input == "Life Expectancy" &
         input$select_input == "Top 5 Areas"){
       
       # Five Highest Areas for Life Expectancy 
@@ -91,17 +91,17 @@ server <- function(input, output, session) {
         ggplot() +
         aes(x = reorder(name, le_value), y = le_value) +
         geom_col() +
-        ggtitle(paste("Five Highest Areas for Life Expectancy by", input$datazone_input)) +
+        ggtitle(paste("Five Highest Areas for Life Expectancy by", input$rank_area_input)) +
         ylim(0, 100) +
         theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
         labs(
-          x = paste("\n", input$datazone_input),
+          x = paste("\n", input$rank_area_input),
           y = "Life Expectancy (years)\n"
         )
       
     }
     
-    if (input$health_input == "Drug Misuse" &
+    if (input$rank_topic_input == "Drug Misuse" &
         input$select_input == "Top 5 Areas"){
       
       # Five Highest Areas by Number of Drug Users 
@@ -110,16 +110,16 @@ server <- function(input, output, session) {
         ggplot() +
         aes(x = reorder(name, number_assessed), y = number_assessed) +
         geom_col() +
-        ggtitle(paste("Five Highest Areas by Number of Drug Users in Treatment by", input$datazone_input)) +
+        ggtitle(paste("Five Highest Areas by Number of Drug Users in Treatment by", input$rank_area_input)) +
         theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
         labs(
-          x = paste("\n", input$datazone_input),
+          x = paste("\n", input$rank_area_input),
           y = "Number of Patients Assessed\n"
         )
       
     }
     
-    if (input$health_input == "Smoking" &
+    if (input$rank_topic_input == "Smoking" &
         input$select_input == "Top 5 Areas"){
       
       # Five Highest Areas by Percentage of Smokers
@@ -128,17 +128,17 @@ server <- function(input, output, session) {
         ggplot() +
         aes(x = reorder(name, sm_percent), y = sm_percent) +
         geom_col() +
-        ggtitle(paste("Five Highest Areas by Percentage of Smokers by", input$datazone_input)) +
+        ggtitle(paste("Five Highest Areas by Percentage of Smokers by", input$rank_area_input)) +
         ylim(0, 100) +
         theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
         labs(
-          x = paste("\n", input$datazone_input),
+          x = paste("\n", input$rank_area_input),
           y = "Number of Smokers (%)\n"
         )
       
     }
     
-    if(input$health_input == "Life Expectancy" &
+    if(input$rank_topic_input == "Life Expectancy" &
        input$select_input == "Bottom 5 Areas"){
       
       # Five Lowest Areas for Life Expectancy by
@@ -147,17 +147,17 @@ server <- function(input, output, session) {
         ggplot() +
         aes(x = reorder(name, -le_value), y = le_value) +
         geom_col() +
-        ggtitle(paste("Five Lowest Areas for Life Expectancy by", input$datazone_input)) +
+        ggtitle(paste("Five Lowest Areas for Life Expectancy by", input$rank_area_input)) +
         ylim(0, 100) +
         theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
         labs(
-          x = paste("\n", input$datazone_input),
+          x = paste("\n", input$rank_area_input),
           y = "Life Expectancy (years)\n"
         )
       
     }
     
-    if (input$health_input == "Drug Misuse" &
+    if (input$rank_topic_input == "Drug Misuse" &
         input$select_input == "Bottom 5 Areas"){
       
       # Five Lowest Areas by Number of Drug Users by
@@ -167,17 +167,17 @@ server <- function(input, output, session) {
         ggplot() +
         aes(x = reorder(name, -number_assessed), y = number_assessed) +
         geom_col() +
-        ggtitle(paste("Five Lowest Areas by Number of Drug Users in Treatment by", input$datazone_input)) +
+        ggtitle(paste("Five Lowest Areas by Number of Drug Users in Treatment by", input$rank_area_input)) +
         theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
         labs(
-          x = paste("\n", input$datazone_input),
+          x = paste("\n", input$rank_area_input),
           y = "Number of Patients Assessed\n"
         )
       
     }
     
     # Five Lowest Areas by Percentage of Smokers by
-    if(input$health_input == "Smoking" &
+    if(input$rank_topic_input == "Smoking" &
        input$select_input == "Bottom 5 Areas"){
       
       plot <- filtered_data_sm() %>%
@@ -185,11 +185,11 @@ server <- function(input, output, session) {
         ggplot() +
         aes(x = reorder(name, -sm_percent), y = sm_percent) +
         geom_col() +
-        ggtitle(paste("Five Lowest Areas by Percentage of Smokers by", input$datazone_input)) +
+        ggtitle(paste("Five Lowest Areas by Percentage of Smokers by", input$rank_area_input)) +
         ylim(0, 100) +
         theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
         labs(
-          x = paste("\n", input$datazone_input),
+          x = paste("\n", input$rank_area_input),
           y = "Number of Smokers (%)\n"
         )
       
@@ -201,7 +201,7 @@ server <- function(input, output, session) {
   
   output$dataTable <- renderTable({
     
-    if (input$health_input == "Life Expectancy" &
+    if (input$rank_topic_input == "Life Expectancy" &
         input$select_input == "Top 5 Areas"){
       
       # data table for Five Highest Areas for Life Expectancy 
@@ -210,7 +210,7 @@ server <- function(input, output, session) {
         head(5) 
     }
     
-    if (input$health_input == "Drug Misuse" &
+    if (input$rank_topic_input == "Drug Misuse" &
         input$select_input == "Top 5 Areas"){
       
       # data table for Five Highest Areas by Number of Drug Users
@@ -218,7 +218,7 @@ server <- function(input, output, session) {
         head(5)
     }
     
-    if (input$health_input == "Smoking" &
+    if (input$rank_topic_input == "Smoking" &
         input$select_input == "Top 5 Areas"){
       
       # data table for Five Highest Areas by Percentage of Smokers
@@ -226,7 +226,7 @@ server <- function(input, output, session) {
         head(5)
     }
     
-    if (input$health_input == "Life Expectancy" &
+    if (input$rank_topic_input == "Life Expectancy" &
         input$select_input == "Bottom 5 Areas"){
       
       # data table for Five Highest Areas for Life Expectancy 
@@ -235,7 +235,7 @@ server <- function(input, output, session) {
         tail(5) 
     }
     
-    if (input$health_input == "Drug Misuse" &
+    if (input$rank_topic_input == "Drug Misuse" &
         input$select_input == "Bottom 5 Areas"){
       
       # data table for Five Highest Areas by Number of Drug Users
@@ -244,7 +244,7 @@ server <- function(input, output, session) {
     }
     
     
-    if (input$health_input == "Smoking" &
+    if (input$rank_topic_input == "Smoking" &
         input$select_input == "Bottom 5 Areas"){
       
       # data table for Five Highest Areas by Percentage of Smokers

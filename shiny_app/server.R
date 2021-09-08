@@ -149,7 +149,10 @@ server <- function(input, output, session) {
   #                 })
 
 # Server script for plots & table -------------------------------------
-
+    
+    observeEvent(c(input$jumpToTrend, input$breakdown_input,input$name_input,input$demographic_input, input$topic_input,
+                   input$rank_topic_input, input$rank_area_input, input$sex_input, input$select_input), {
+  if(input$jumpToTrend){
   filtered_data <- reactive(
       select_data(input$breakdown_input,input$name_input,input$demographic_input, input$topic_input)
     )
@@ -168,6 +171,28 @@ server <- function(input, output, session) {
     output$output_table <- renderDataTable({
       filtered_data()
     })
+  } else{
+    
+    filtered_data <- reactive(
+      select_rank_data(input$topic_input, input$sex_input, input$rank_area_input)
+    )
+    
+    # Function to create ggplot
+    plot <- reactive(
+      plot_rank_object(input$topic_input, filtered_data(), input$rank_area_input)
+    )
+    
+    # create plot
+    output$rank_distPlot <- renderPlot({
+      plot()
+    })
+    
+    # data table to show the data displayed in the life expectancy plot
+    output$rank_output_table <- renderDataTable({
+      filtered_data()
+    })
+  }
+    })   
 
 # Server script for Smoking  --------------------------------------------
 
@@ -202,7 +227,7 @@ server <- function(input, output, session) {
                      ) %>%
               select("Area Name", Value)
           })
-          
+
 # Download script   -----------------------------------------------------
 output$download_report <- downloadHandler(
 

@@ -10,9 +10,9 @@ library(shiny)
 library(tidyverse)
 library(here)
 
-life_expectancy <- read_csv(here("clean_data/life_expectancy.csv"))
-smoking <- read_csv(here("clean_data/smoking.csv"))
-drugs <- read_csv(here("clean_data/sdmd_by_ca_and_demo_clean.csv"))
+life_expectancy <- read_csv(here("data/life_expectancy.csv"))
+smoking <- read_csv(here("data/smoking.csv"))
+drugs <- read_csv(here("data/sdmd_combined_plus_zones.csv"))
 
 ui <- fluidPage(
   
@@ -71,20 +71,6 @@ ui <- fluidPage(
 
 server <- function(input, output, session) {
   
-  # observeEvent(input$health_input, {
-  #   date_selection <- case_when(
-  #     input$health_input == "Life Expectancy" ~ life_expectancy$date_code,
-  #     input$health_input == "Drugs" ~ drugs$year,
-  #     input$health_input == "Smoking" ~ smoking$date_code
-  #   )
-  #   
-  #   updateSelectInput(
-  #     "date_input", 
-  #     choices = date_selection, 
-  #     session = getDefaultReactiveDomain()
-  #   )
-  # })
-  
   filtered_data_le <- reactive({life_expectancy %>% 
       filter(type == input$datazone_input,
              simd_quintiles == "All",
@@ -109,24 +95,6 @@ server <- function(input, output, session) {
           y = "Life Expectancy (years)\n",
           fill = "Sex"
         )
-      
-      # create data table for selected type - top 5
-      output$dataTable_top <- renderTable({
-        filtered_data_le() %>%
-          filter(sex == input$sex_input) %>% 
-          select(name, date_code, sex, age, le_lower_ci, le_upper_ci, le_value) %>%
-          arrange(desc(le_value)) %>% 
-          head(5)
-      })
-      
-      # create data table for selected type - bottom 5
-      output$dataTable_bottom <- renderTable({
-        filtered_data_le() %>%
-          filter(sex == input$sex_input) %>% 
-          select(name, date_code, sex, age, le_lower_ci, le_upper_ci, le_value) %>%
-          arrange(desc(le_value)) %>% 
-          tail(5)
-      })
       
     }
     

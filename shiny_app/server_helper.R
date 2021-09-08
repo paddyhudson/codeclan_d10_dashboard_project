@@ -160,6 +160,12 @@ select_rank_data <- function(topic_input, sex_input, rank_area_input) {
       select_drug_rank_data(sex_input, rank_area_input)
     }
   }
+
+  {
+    if(topic_input == "Smoking")  {
+      #Function available in the drug.R
+      select_drug_rank_data(sex_input, rank_area_input)  
+  }
 }
 
 # Function to plot the data based on user choice------------------------------
@@ -175,5 +181,11 @@ plot_rank_object <- function(topic_input, data, rank_area_input) {
       plot_drugs_rank_object(data, rank_area_input)
     }
   }
-}
 
+  {
+    if(topic_input == "Smoking") {
+      plot_sm_rank_object(data, rank_area_input)
+    }
+  }
+}
+}

@@ -10,6 +10,7 @@
 library(shiny)
 library(shinydashboard)
 library(shinythemes)
+library(shinyWidgets)
 library(dashboardthemes)
 library(hover)
 library(here)
@@ -19,6 +20,8 @@ library(RColorBrewer)
 library(shinyBS)
 library(sf)
 library(leaflet)
+library (DT)
+
 
 source (here("analysis/load_clean_data.R"))
 

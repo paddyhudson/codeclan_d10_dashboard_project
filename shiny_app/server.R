@@ -220,10 +220,6 @@ map_area_input <- reactive(input$map_area_input)
 map_topic_input <- reactive(input$map_topic_input)
 map_data <- reactive(get_map_data(map_topic_input(), map_area_input()))
 
-          #Create colour palette
-          map_palette <- reactive(
-            colorNumeric("magma", domain = range(map_data()$value)))
-
           #get the map
           output$my_map <- renderLeaflet({
             map_data() %>%
@@ -231,8 +227,24 @@ map_data <- reactive(get_map_data(map_topic_input(), map_area_input()))
               #addTiles() %>% #uncomment this line to add background map
               addPolygons(
                 popup = ~ str_c(name, "<br>", label, " = ", round(value, 2), sep = ""),
-               # color = ~ map_palette(value)
+                color = ~colour
+              ) %>% 
+              addLegend(
+                position = "bottomright",
+                colors = ~colour,
+                labels = ~name
               )
+          })
+          
+          #get the table
+          
+          output$map_table <- renderDataTable({
+            map_data() %>% 
+              as_tibble() %>% 
+              mutate("Area Name" = name,
+                     "Value" = round(value, 2)
+                     ) %>% 
+              select("Area Name", Value)
           })
           
 # Download script   -----------------------------------------------------        

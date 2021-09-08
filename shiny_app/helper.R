@@ -19,6 +19,7 @@ library(RColorBrewer)
 library(shinyBS)
 library(sf)
 library(leaflet)
+library(viridis)
 
 source (here("analysis/load_clean_data.R"))
 

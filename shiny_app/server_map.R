@@ -39,6 +39,7 @@ get_map_data <- function(topic_input, area_input)
       filter(
         date_code == 2019,
         long_term_condition == "All",
+        type_of_tenure == "All",
         household_type == "All",
         smokes == "Yes"
       ) %>%
@@ -49,5 +50,19 @@ get_map_data <- function(topic_input, area_input)
   #join to get map data
   map_data <- spatial_data %>%
     left_join(topic_data, by = c("code" = "feature_code"))
+  
+  #Create colour palette
+  
+  if (topic_input == "Life Expectancy"){
+    map_palette <- colorNumeric("viridis", domain = range(map_data$value), reverse = TRUE)
+    map_data <- map_data %>% arrange(desc(value))
+  } else {
+    map_palette <- colorNumeric("viridis", domain = range(map_data$value))
+    map_data <- map_data %>% arrange(value)
+  }
+  
+  map_data <- map_data %>% 
+    mutate(colour = map_palette(value))
+  
   return(map_data)
 }

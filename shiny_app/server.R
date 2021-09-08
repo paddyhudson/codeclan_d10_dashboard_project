@@ -7,6 +7,7 @@
 #                 |             | Home Page, Trend Page & Rank Page        #
 #                 |             |                                          #
 # 1.1             | Derek       | Server script for Life Expectancy        #
+# 1.2             | JP          | Server script for Drug Abuse             #
 #--------------------------------------------------------------------------#
 
 server <- function(input, output, session) {
@@ -28,31 +29,17 @@ server <- function(input, output, session) {
   })
 
 
-  #This output variable is used in UI to display the plot title
-  #Multiple assignment for each tabset
-
-
 # Server script for Trend Page ------------------------------------------------
   
-    #This output variable is used in UI to display the plot title in Trend Tab
+  #This output variable is used in UI to display the plot title in Trend Tab
+  output$topic <- renderText({ input$topic_input})
+  output$area <- renderText({ input$area_input})
+  output$name <- renderText({ input$name_input})
+  output$demographic <- renderText({ input$demographic_input})
+  output$breakdown <- renderText({ input$breakdown_input})
 
-    output$topic <- renderText({ input$topic_input})
-    output$area <- renderText({ input$area_input})
-    output$name <- renderText({ input$name_input})
-    output$demographic <- renderText({ input$demographic_input})
-    output$breakdown <- renderText({ input$breakdown_input})
-
-    output$rank_topic<- renderText({ input$rank_topic_input})
-    output$rank_area <- renderText({ input$rank_area_input})
-    output$rank_name <- renderText({ input$rank_name_input})
-    output$rank_demographic <- renderText({input$rank_demographic_input})
-    output$rank_breakdown  <- renderText({input$rank_breakdown_input})
-
-# Update Inputs for Trend Page  ----------------------------------------------
-
-    
 # Update Inputs for Trend Page
-    
+
     # Event to populate the area dynamically    
 
     observeEvent( input$topic_input, {
@@ -81,7 +68,6 @@ server <- function(input, output, session) {
         session = getDefaultReactiveDomain()
       )
     })
-
   
     # Event to populate the choices of breakdown dynamically    
     observeEvent(c(input$breakdown_input,
@@ -102,7 +88,7 @@ server <- function(input, output, session) {
                      )
                    })
 
-# Server script for Rank Page 
+# Server script for Rank Page ------------------------------------------------
     
     #This output variable is used in UI to display the plot title in Rank Tab
     output$rank_topic<- renderText({ input$rank_topic_input})
@@ -162,32 +148,17 @@ server <- function(input, output, session) {
                     )
                   })
 
-  # Server script for life expectancy -------------------------------------
+# Server script for plots & table -------------------------------------
 
-      filtered_data <- reactive(
-          select_life_data(input$breakdown_input,input$name_input,input$demographic_input )
-        )
+  filtered_data <- reactive(
+      select_data(input$breakdown_input,input$name_input,input$demographic_input, input$topic_input)
+    )
 
-        # Function to create ggplot
-        plot <- reactive(
-          plot_life_object(data = filtered_data(), input$breakdown_input)
-        )
-        
+    # Function to create ggplot
+    plot <- reactive(
+      plot_object(data = filtered_data(), input$breakdown_input, input$topic_input)
+    )
 
-# Server script for Drug Abuse ------------------------------------------
-
-        filtered_drugs_data <- reactive(
-          select_drug_data(input$breakdown_input,input$name_input,input$demographic_input )
-        )
-
-          # Function to create ggplot
-          plot_drugs <- reactive(
-            plot_drugs_object(data = filtered_drugs_data(), input$breakdown_input)
-          )
-# Observe Event for Plots and Data------------------------------------------        
-observeEvent(input$topic_input, {
-  if(input$topic_input == "Life Expectancy")
-  {
     # create plot
     output$distPlot <- renderPlot({
       plot()
@@ -197,44 +168,72 @@ observeEvent(input$topic_input, {
     output$output_table <- renderDataTable({
       filtered_data()
     })
-  }
-  else 
-  {
-    # create plot
-    output$distPlot <- renderPlot({
-      plot_drugs()
-    })
-    
-    # data table to show the data displayed in the life expectancy plot
-    output$output_table <- renderDataTable({
-      filtered_drugs_data()
-    })
-  }             
-})
-        
 
 # Server script for Smoking  --------------------------------------------
 
 # Server script for Map  ------------------------------------------------
-map_area_input <- reactive(input$map_area_input)
-map_topic_input <- reactive(input$map_topic_input)
-map_data <- reactive(get_map_data(map_topic_input(), map_area_input()))
+    #choose spatial data
+    # spatial_data <- switch(input$area_input,
+    #                        "NHS Health Board" = hb_zones,
+    #                        "Local Authority" = la_zones
+    # )
+    # 
+    # #choose topic data
+    # topic_data <- switch(input$topic_input,
+    #                      "Life Expectancy" = life_expectancy_clean,
+    #                      "Drug Abuse" = sdmd_combined_plus_zones,
+    #                      "Smoking" = smoking_clean
+    # ) %>%
+    #   filter(type == input$area_input,
+    #          sex == "All",
+    #          age == switch(input$topic_input,
+    #                        "Life Expectancy" = 0,
+    #                        "Drug Abuse" = "All",
+    #                        "Smoking" = "All"
+    #          )
+    #   ) %>% 
+    #   select(-name)
+    # 
+    # if (input$topic_input == "Life Expectancy"){
+    #   topic_data <- topic_data %>% 
+    #     filter(date_code == "2017-2019") %>% 
+    #     rename(value = le_value) %>% 
+    #     mutate(label = "Life Expectancy")
+    # } else if (input$topic_input == "Drug Abuse"){
+    #   topic_data <- topic_data %>% 
+    #     filter(year == "2017/18") %>% 
+    #     rename(value = number_assessed) %>% 
+    #     mutate(label = "Number Assessed")
+    # } else if (input$topic_input == "Smoking"){
+    #    topic_data <- topic_data %>%
+    #     filter(date_code == 2019,
+    #        long_term_condition == "All",
+    #        household_type == "All",
+    #        smokes == "Yes"
+    #     ) %>% 
+    #     rename(value = sm_percent) %>% 
+    #     mutate(label = "Percentage of Population who are Smokers")
+    # }
+    # 
+    # #join to get map data
+    # map_data <- spatial_data %>% 
+    #   left_join(topic_data, by = c("code" = "feature_code"))
+    # 
+    # #Create colour palette
+    # map_palette <- colorNumeric("magma", domain = range(map_data$value))
+    # 
+    # #get the map
+    # output$my_map <- renderLeaflet({
+    # map_data %>% 
+    #   leaflet() %>% 
+    #   #addTiles() %>% #uncomment this line to add background map
+    #   addPolygons(
+    #     popup = ~str_c(name, "<br>", label, " = ", round(value, 2), sep = ""),
+    #     color = ~map_palette(value)
+    #   )
+    # })  
 
-          #Create colour palette
-          map_palette <- reactive(
-            colorNumeric("magma", domain = range(map_data()$value)))
 
-          #get the map
-          output$my_map <- renderLeaflet({
-            map_data() %>%
-              leaflet() %>%
-              #addTiles() %>% #uncomment this line to add background map
-              addPolygons(
-                popup = ~ str_c(name, "<br>", label, " = ", round(value, 2), sep = ""),
-               # color = ~ map_palette(value)
-              )
-          })
-          
 # Download script   -----------------------------------------------------        
 output$download_report <- downloadHandler(
   

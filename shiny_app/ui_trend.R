@@ -6,8 +6,6 @@
 # 1.0             | Prathiba    | Initial Version                          #
 #--------------------------------------------------------------------------#
 
-library (shinyWidgets)
-
 ui <- fluidPage(
   #style = "background-color: #a6cbe3" ,
   #titlePanel(tags$h2("Trend")),
@@ -46,7 +44,7 @@ ui <- fluidPage(
         checkboxGroupInput("demographic_input",
                            "",
                            choices = NULL,
-                           inline = TRUE)
+                           inline = FALSE)
       )
       ),
       fluidRow(tags$br()),
@@ -76,7 +74,7 @@ ui <- fluidPage(
           box(
             width = 12,
             title = tags$h3("Table"),
-            dataTableOutput("output_table")
+            DT::dataTableOutput("output_table")
           )
         )
       

@@ -17,6 +17,8 @@ library(tidyverse)
 library(ggplot2)
 library(RColorBrewer)
 library(shinyBS)
+library(sf)
+library(leaflet)
 
 source (here("analysis/load_clean_data.R"))
 

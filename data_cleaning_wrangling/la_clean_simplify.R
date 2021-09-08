@@ -18,7 +18,8 @@ la_zones <- read_sf(here("original_data/localauthorityboundaries/pub_las.shp")) 
 
 la_zones <- la_zones %>% 
   st_transform('+proj=longlat +datum=WGS84') %>% 
-  mutate(geometry = st_simplify(st_make_valid(geometry), dTolerance = 500))
+  mutate(geometry = st_simplify(st_make_valid(geometry), dTolerance = 500)) %>% 
+  rename(name = local_auth)
 
 #Use this code to save the output in a new file.  Remember to specify filepath
 

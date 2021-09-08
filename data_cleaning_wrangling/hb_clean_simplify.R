@@ -18,7 +18,8 @@ hb_zones <- read_sf(here("original_data/healthboards2019/SG_NHS_HealthBoards_201
 
 hb_zones <- hb_zones %>% 
   st_transform('+proj=longlat +datum=WGS84') %>% 
-  mutate(geometry = st_simplify(geometry, dTolerance = 500))
+  mutate(geometry = st_simplify(geometry, dTolerance = 500)) %>% 
+  rename(name = hb_name, code = hb_code)
 
 #Use this code to save the output in a new file.  Remember to specify filepath
 

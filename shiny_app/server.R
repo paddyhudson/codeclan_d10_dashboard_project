@@ -115,52 +115,52 @@ server <- function(input, output, session) {
     
   # Event to populate the area dynamically    
 
-  observeEvent( input$rank_topic_input, {
-    updateSelectInput(
-          inputId = "rank_area_input",
-          choices = choose_area(input$rank_topic_input),
-          session = getDefaultReactiveDomain()
-        )
-      })
+  # observeEvent( input$rank_topic_input, {
+  #   updateSelectInput(
+  #         inputId = "rank_area_input",
+  #         choices = choose_area(input$rank_topic_input),
+  #         session = getDefaultReactiveDomain()
+  #       )
+  #     })
 
   # Event to populate the name dynamically  
-  observeEvent(c( input$rank_area_input, 
-                    input$rank_topic_input), {
-  updateSelectInput(
-    inputId = "rank_name_input",
-    choices = choose_name(input$rank_topic_input,input$rank_area_input),
-    session = getDefaultReactiveDomain()
-  )
-  })
+  # observeEvent(c( input$rank_area_input, 
+  #                   input$rank_topic_input), {
+  # updateSelectInput(
+  #   inputId = "rank_name_input",
+  #   choices = choose_name(input$rank_topic_input,input$rank_area_input),
+  #   session = getDefaultReactiveDomain()
+  # )
+  # })
   
   # Event to populate the breakdown topic dynamically  
-  observeEvent(input$rank_topic_input, {
-    updateSelectInput(
-      inputId = "rank_breakdown_input",
-      choices = choose_breakdown_topic(input$rank_topic_input),
-      session = getDefaultReactiveDomain()
-    )                 
-  })
+  # observeEvent(input$rank_topic_input, {
+  #   updateSelectInput(
+  #     inputId = "rank_breakdown_input",
+  #     choices = choose_breakdown_topic(input$rank_topic_input),
+  #     session = getDefaultReactiveDomain()
+  #   )                 
+  # })
   
   # Event to populate the choices of breakdown dynamically
-  observeEvent(c(input$rank_breakdown_input,
-                  input$rank_area_input,
-                  input$rank_name_input,
-                  input$rank_topic_input), {
-
-
-      choice <- choose_breakdown(input$rank_topic_input,
-                                 input$rank_breakdown_input,
-                                 input$rank_area_input,
-                                 input$rank_name_input )
-
-      updateCheckboxGroupInput(session = session,
-                         inputId = "rank_demographic_input",
-                         choices = choice,
-                         selected = choice,
-                         inline = TRUE
-                    )
-                  })
+  # observeEvent(c(input$rank_breakdown_input,
+  #                 input$rank_area_input,
+  #                 input$rank_name_input,
+  #                 input$rank_topic_input), {
+  # 
+  # 
+  #     choice <- choose_breakdown(input$rank_topic_input,
+  #                                input$rank_breakdown_input,
+  #                                input$rank_area_input,
+  #                                input$rank_name_input )
+  # 
+  #     updateCheckboxGroupInput(session = session,
+  #                        inputId = "rank_demographic_input",
+  #                        choices = choice,
+  #                        selected = choice,
+  #                        inline = TRUE
+  #                   )
+  #                 })
 
   # Server script for life expectancy -------------------------------------
 

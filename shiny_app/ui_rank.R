@@ -17,36 +17,37 @@ ui <- fluidPage(
       fluidRow(
         selectInput("rank_topic_input",
                     "Select topic",
-                    choices = c("Life Expectancy", "Drug Abuse","Smoking")
+                    choices = c("Life Expectancy", "Drug Abuse", "Smoking")
                     
         )),
       fluidRow(
         selectInput("rank_area_input",
                     "Select Data Zone",
-                    choices = NULL
+                    choices = c("Local Authority", "NHS Health Board")
                     
         )),
       
       fluidRow(
-        selectInput("rank_name_input",
-                    "Select Region:",
-                    choices = NULL
-        ),
-      ),
-      fluidRow(
-        selectInput("rank_breakdown_input",
-                    "Select breakdown:",
-                    choices = NULL
+        selectInput("sex_input",
+                    "Select Sex",
+                    choices = c("All", "Male", "Female")
         )
       ),
       
-      dropdown(
-        label = "Select one or more breakdown", status = "default",
-        checkboxGroupInput("rank_demographic_input",
-                           "",
-                           choices = NULL,
-                           inline = TRUE)
+      fluidRow(
+        selectInput("select_input",
+                    "Selection",
+                    choices = c("Top 5", "Bottom 5")
+        )
       )
+      
+      # dropdown(
+      #   label = "Select one or more breakdown", status = "default",
+      #   checkboxGroupInput("rank_demographic_input",
+      #                      "",
+      #                      choices = NULL,
+      #                      inline = TRUE)
+      # )
     ),
     mainPanel(
       #Content to display the plot

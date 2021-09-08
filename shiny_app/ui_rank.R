@@ -38,10 +38,7 @@ ui <- fluidPage(
       fluidRow(
         selectInput("date_input",
                     "Date",
-                    choices = case_when(
-                      health_input == "Life Expectancy" ~ unique(life_expectancy$date_code),
-                      health_input == "Drug Misuse" ~ unique(drugs$year),
-                      health_input == "Smoking" ~ unique(smoking$date_code))
+                    choices = unique(life_expectancy$date_code)
         )),
       
       fluidRow(
@@ -73,6 +70,20 @@ ui <- fluidPage(
 
 
 server <- function(input, output, session) {
+  
+  # observeEvent(input$health_input, {
+  #   date_selection <- case_when(
+  #     input$health_input == "Life Expectancy" ~ life_expectancy$date_code,
+  #     input$health_input == "Drugs" ~ drugs$year,
+  #     input$health_input == "Smoking" ~ smoking$date_code
+  #   )
+  #   
+  #   updateSelectInput(
+  #     "date_input", 
+  #     choices = date_selection, 
+  #     session = getDefaultReactiveDomain()
+  #   )
+  # })
   
   filtered_data_le <- reactive({life_expectancy %>% 
       filter(type == input$datazone_input,

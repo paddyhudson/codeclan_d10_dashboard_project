@@ -199,7 +199,35 @@ server <- function(input, output, session) {
 # Server script for Map  ------------------------------------------------
     map_area_input <- reactive(input$map_area_input)
     map_topic_input <- reactive(input$map_topic_input)
-    map_data <- reactive(get_map_data(map_topic_input(), map_area_input()))
+    map_breakdown_input <- reactive(input$map_breakdown_input)
+    map_group_input <- reactive(input$map_group_input)
+    map_data <- reactive(get_map_data(map_topic_input(),
+                                      map_area_input(),
+                                      map_breakdown_input(),
+                                      map_group_input())
+    )
+    
+    observeEvent(input$map_topic_input, {
+                     updateSelectInput(
+                       session = getDefaultReactiveDomain(),
+                       inputId = "map_breakdown_input",
+                       choices = switch(
+                         input$map_topic_input,
+                         "Life Expectancy" = c("None", "Gender"),
+                         "Drug Abuse" = c("None", "Age", "Gender"),
+                         "Smoking" = c("None", "Age", "Gender")
+                       )
+                    )
+                   })
+    
+    observeEvent(c(input$map_breakdown_input,
+                   input$map_topic_input), {
+      updateSelectInput(
+        session = getDefaultReactiveDomain(),
+        inputId = "map_group_input",
+        choices = get_group_choices(map_topic_input(), map_breakdown_input())
+      )
+    })
 
           #get the map
           output$my_map <- renderLeaflet({

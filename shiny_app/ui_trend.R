@@ -44,7 +44,7 @@ ui <- fluidPage(
         checkboxGroupInput("demographic_input",
                            "",
                            choices = NULL,
-                           inline = FALSE)
+                           inline = TRUE)
       )
       )
       # ,

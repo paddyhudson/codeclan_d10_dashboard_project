@@ -44,16 +44,12 @@ distinct(age)
 
 ## The Data
 
-- What is life expectancy and why it was chosen?
-
-Life expectancy is a statistical measure of the average time an organism is expected to live, based on the year of its birth, its current age and any other demographic factors including sex and geographic area.
+- What is life expectancy and why was it chosen?
 
 - The source of the data
 
-statistics.gov.uk
-
 - Why was this data selected?
- 
+
 ## Trend - D&G
 
 - Life expectancy over time for Dumfries & Galloway
@@ -73,6 +69,7 @@ life_expectancy_clean %>%
   aes(x = date_code, y = le_value, group = sex, colour = sex) +
   geom_line() +
   geom_ribbon(aes(ymax = le_upper_ci, ymin = le_lower_ci), alpha = 0.25, colour = NA) +
+  theme_bw() +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5)) +
   labs(
     x = "\nYear",
@@ -99,6 +96,7 @@ life_expectancy_clean %>%
   aes(x = date_code, y = le_value, group = sex, colour = sex) +
   geom_line() +
   geom_ribbon(aes(ymax = le_upper_ci, ymin = le_lower_ci), alpha = 0.25, colour = NA) +
+  theme_bw() +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5)) +
   labs(
     x = "\nYear",
@@ -108,10 +106,36 @@ life_expectancy_clean %>%
   ggtitle("Life Expectancy for Scotland")
 ```
 
-## Rank
-- Overview
-- Plot
-- Findings / key areas for business to focus on / disparity between areas
+## Rank - Local Authority
+
+- Life expectancy by local authority in the period 2017-2019
+```{r, message=FALSE}
+life_expectancy_clean %>% 
+  filter(type == "Local Authority",
+         simd_quintiles == "All",
+         urban_rural_classification == "All",
+         sex != "All",
+         age == 0,
+         date_code == "2017-2019") %>% 
+  ggplot() +
+  aes(x = reorder(name, le_value), y = le_value, group = sex, colour = sex) +
+  geom_line() +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+  labs(
+    x = "\nLocal Authority",
+    y = "Life Expectancy (years)\n",
+    fill = "Sex"
+  ) +
+  ggtitle("Life Expectancy by Local Authority")
+```
+## Key Findings
+
+- In Scotland in 2019-2019, the life expectancy at birth was 77.1 years for males, and 81.1 years for females.
+- Life expectancy since 199-1993 has increased but has largely remained unchanged since 2013-2015.
+- Female life expectancy is lowest at birth in Glasgow (78.5 years) and highest in East Renfrewshire (84 years).
+- Male life expectancy is lowest at birth in Glasgow (73.6 years) and highest in East Dunbartonshire (80.5 years).
+- The majority of Scotland's council areas have seen a slow down in life expectancy since 2013-2015, with some seeing a decrease.
 
 
 # Key findings - Smoking | John Paul

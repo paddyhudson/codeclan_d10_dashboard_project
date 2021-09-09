@@ -1,8 +1,11 @@
 ---
-title: "D10 Dashboard Project - Public Health Priorities"
+title: "D10 Dashboard Project - Public Health Priorities for Scotland"
 author: "D10 Data Solutions"
 date: "09/09/2021"
-output: ioslides_presentation
+output: 
+  ioslides_presentation:
+        widescreen: true
+        css: styles.css
 ---
 
 ```{r setup, include=FALSE}
@@ -16,8 +19,6 @@ library(here)
 sdmd_combined_plus_zones <- 
   read_csv(here("clean_data/sdmd_combined_plus_zones.csv"))
 
-sdmd_combined_plus_zones %>% 
-distinct(age)
 ```
 
 
@@ -145,13 +146,26 @@ sdmd_combined_plus_zones %>%
 ```
 
 
-## Rank
-- Overview
-```{r, message=FALSE}
+## Rank  
 
+```{r, message=FALSE}
+ sdmd_combined_plus_zones %>% 
+  filter(type == "NHS Health Board",
+             year == "2018/19",
+             sex == "All") %>%
+      arrange(desc(number_assessed)) %>% 
+      head(5) %>%
+      ggplot() +
+      aes(x = reorder(name, number_assessed), y = number_assessed) +
+      geom_col() +
+      ggtitle("Five Highest Areas by Number of Drug Users in Treatment (Health Boards)") +
+      theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+      labs(
+        x = "\nData Zone",
+        y = "Number of Patients Assessed\n"
+      )
 ```
 
-- Findings / key areas for business to focus on / disparity between areas
 
 
 ## Conclusion | Jonathan

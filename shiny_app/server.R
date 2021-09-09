@@ -266,9 +266,9 @@ server <- function(input, output, session) {
           output$map_units <- renderText({
             switch(
               map_topic_input(),
-              "Life Expectancy" = "Displaying Years of Life Expectancy",
-              "Drug Abuse" = "Displaying Number of Individuals Presenting for Assessment",
-              "Smoking" = "Displaying Percentage of Population who Smoke"
+              "Life Expectancy" = "Displaying Years of Life Expectancy.",
+              "Drug Abuse" = "Displaying Number of Individuals Presenting for Assessment.",
+              "Smoking" = "Displaying Percentage of Population who Smoke."
             )
           })
 

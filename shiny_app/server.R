@@ -247,6 +247,30 @@ server <- function(input, output, session) {
                      ) %>%
               select("Area Name", Value)
           })
+          
+          #get the stats
+          
+          output$map_stats <- renderTable({
+            map_data() %>%
+              as_tibble() %>%
+              summarise(
+                "Mean" = mean(value),
+                "Standard Deviation" = sd(value)
+                ) %>%
+              pivot_longer(cols = 1:2)
+          },
+          colnames = FALSE)
+          
+          #get the units
+          
+          output$map_units <- renderText({
+            switch(
+              map_topic_input(),
+              "Life Expectancy" = "Displaying Years of Life Expectancy",
+              "Drug Abuse" = "Displaying Number of Individuals Presenting for Assessment",
+              "Smoking" = "Displaying Percentage of Population who Smoke"
+            )
+          })
 
           
 #   output$plot <- renderPlot(plot(),width = 850, height = 425)

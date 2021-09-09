@@ -30,14 +30,14 @@ ui <- fluidPage(
       fluidRow(
         selectInput("rank_sex_input",
                     "Select Sex",
-                    choices = c("All", "Male", "Female")
+                    choices = c("Male", "Female")
         )
       ),
       
       fluidRow(
         radioButtons("rank_select_input",
                     "Selection",
-                    choices = c("Top 5", "Bottom 5")
+                    choices = c("Highest 5", "Lowest 5")
         )
       )
     ),
@@ -52,7 +52,7 @@ ui <- fluidPage(
                           textOutput("rank_area", inline = TRUE)
           ),
           width = 12, status = "primary",
-          plotOutput("rank_distPlot")
+          plotlyOutput("rank_distPlot")
         )
       ),
       #Content to display the table

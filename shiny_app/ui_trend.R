@@ -44,7 +44,7 @@ ui <- fluidPage(
         checkboxGroupInput("demographic_input",
                            "",
                            choices = NULL,
-                           inline = FALSE)
+                           inline = TRUE)
       )
       )
       # ,
@@ -66,7 +66,7 @@ ui <- fluidPage(
                                " Category  "
                ),
                width = 12, status = "primary",
-               plotOutput("distPlot")
+               plotlyOutput("distPlot")
                )
              
     ),

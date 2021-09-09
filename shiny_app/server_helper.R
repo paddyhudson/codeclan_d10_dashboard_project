@@ -62,7 +62,7 @@ choose_breakdown_topic <- function(topic_input, break_down, area_input, name_inp
     if(topic_input == "Drug Abuse")
     {choices <- c("Gender", "Age")}
     else 
-    {choices <- c("Gender", "Age", "Tenure Type")}
+    {choices <- c("Gender", "Age")}
   }
     return (choices)
 }
@@ -178,19 +178,19 @@ select_rank_data <- function(topic_input, sex_input, rank_area_input,select_inpu
 }
 
 # Function to plot the data based on user choice------------------------------
-plot_rank_object <- function(data, topic_input) {
+plot_rank_object <- function(data, topic_input,select_input) {
   
   if(topic_input == "Life Expectancy")
   {
-    plot_life_rank_object(data )
+    plot_life_rank_object(data,select_input)
   }
   else
   {
     if(topic_input == "Drug Abuse")  {
-      plot_drugs_rank_object(data)
+      plot_drugs_rank_object(data,select_input)
     }
     else{
-        plot_sm_rank_object(data)
+        plot_sm_rank_object(data,select_input)
       
     }
   }

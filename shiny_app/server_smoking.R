@@ -84,7 +84,7 @@ plot_smoke_object <- function(data, user_choice) {
 
 select_sm_rank_data <- function(rank_sex_input, rank_area_input, select_input) {
   
-  if (select_input == "Top 5"){
+  if (select_input == "Highest 5"){
   smoking_clean %>%
     filter(type == rank_area_input,
            date_code == "2019",
@@ -115,8 +115,10 @@ select_sm_rank_data <- function(rank_sex_input, rank_area_input, select_input) {
 
 # Function to plot the data based on selected data from user choice
 
-plot_sm_rank_object <- function(data) {
+plot_sm_rank_object <- function(data, select_input) {
     
+  if (select_input == "Highest 5"){
+      
     data %>%
       ggplot() +
       aes(x = reorder(name, sm_percent), y = sm_percent, fill = sm_percent) +
@@ -127,5 +129,22 @@ plot_sm_rank_object <- function(data) {
         x = "Name",
         y = "Number of Smokers (%)\n"
       ) +
+    scale_fill_distiller(palette = "YlGn")+
     color_theme()
+  }
+  else {
+    data %>%
+      ggplot() +
+      aes(x = reorder(name, sm_percent), y = sm_percent, fill = sm_percent) +
+      geom_col() +
+      ylim(0, 100) +
+      theme(axis.text.x = element_text(angle = 45, vjust = 0.5, hjust = 1)) +
+      labs(
+        x = "Name",
+        y = "Number of Smokers (%)\n"
+      ) +
+      scale_fill_distiller(palette = "YlOrRd")+
+      color_theme()
+    
+  }
 }

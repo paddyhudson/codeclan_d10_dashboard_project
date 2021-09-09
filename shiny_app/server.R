@@ -153,15 +153,14 @@ server <- function(input, output, session) {
       filtered_data <- reactive(
           select_data(input$breakdown_input,input$name_input,input$demographic_input, input$topic_input)
         )
-    
         # Function to create ggplot
         plot <- reactive(
           plot_object(data = filtered_data(), input$breakdown_input, input$topic_input)
         )
     
         # create plot
-        output$distPlot <- renderPlot({
-          plot()
+        output$distPlot <- renderPlotly({
+          ggplotly(p = plot())
         })
     
         # data table to show the data displayed in the life expectancy plot
@@ -176,12 +175,12 @@ server <- function(input, output, session) {
     
     # Function to create ggplot
     rank_plot <- reactive(
-      plot_rank_object(filtered_rank_data(),input$rank_topic_input)
+      plot_rank_object(data = filtered_rank_data(),input$rank_topic_input,input$rank_select_input)
     )
     
     # create plot
-    output$rank_distPlot <- renderPlot({
-      rank_plot()
+    output$rank_distPlot <- renderPlotly({
+      ggplotly(rank_plot())
     })
     
     # data table to show the data displayed in the life expectancy plot

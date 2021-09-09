@@ -66,7 +66,7 @@ ui <- fluidPage(
                                " Category  "
                ),
                width = 12, status = "primary",
-               plotOutput("distPlot")
+               plotlyOutput("distPlot")
                )
              
     ),

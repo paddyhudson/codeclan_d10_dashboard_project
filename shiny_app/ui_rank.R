@@ -52,7 +52,7 @@ ui <- fluidPage(
                           textOutput("rank_area", inline = TRUE)
           ),
           width = 12, status = "primary",
-          plotOutput("rank_distPlot")
+          plotlyOutput("rank_distPlot")
         )
       ),
       #Content to display the table

@@ -21,6 +21,7 @@ library(shinyBS)
 library(sf)
 library(leaflet)
 library (DT)
+library(plotly)
 
 
 source (here("analysis/load_clean_data.R"))

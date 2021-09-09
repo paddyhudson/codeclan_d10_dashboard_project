@@ -160,8 +160,8 @@ server <- function(input, output, session) {
         )
     
         # create plot
-        output$distPlot <- renderPlot({
-          plot()
+        output$distPlot <- renderPlotly({
+          ggplotly(plot())
         })
     
         # data table to show the data displayed in the life expectancy plot
@@ -180,8 +180,8 @@ server <- function(input, output, session) {
     )
     
     # create plot
-    output$rank_distPlot <- renderPlot({
-      rank_plot()
+    output$rank_distPlot <- renderPlotly({
+      ggplotly(rank_plot())
     })
     
     # data table to show the data displayed in the life expectancy plot

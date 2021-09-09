@@ -22,8 +22,28 @@ sdmd_combined_plus_zones <-
 life_expectancy_clean <-
   read_csv(here("clean_data/life_expectancy.csv"))
 
-sdmd_combined_plus_zones %>%
-distinct(age)
+color_theme <- function() {
+  theme(
+
+    plot.background = element_rect(fill ="white"),
+    plot.title = element_text(size = rel(2)),
+    plot.title.position = "plot",
+
+    panel.border = element_rect(colour = "blue", fill = NA, linetype = 1),
+    panel.background = element_rect(fill = "white"),
+    panel.grid =  element_line(colour = "grey85", linetype = 1, size = 0.5),
+
+    axis.text = element_text(colour = "blue", face = "italic", size = 14),
+    axis.title.y = element_text(colour = "#1B732B" ,  size = 14, angle = 90),
+    axis.title.x = element_text(colour = "#1B732B" ,  size = 14),
+
+
+    legend.box.background = element_rect(),
+    legend.box.margin = margin(6, 6, 6, 6)
+
+  )
+}
+
 ```
 
 
@@ -31,11 +51,13 @@ distinct(age)
 
 # Introduction | Jonathan
 
-## Structure of presentation
-
-## The Brief
-
 ## The Team
+
+- Derek - Life Expectancy SME
+- John Paul - Smoking SME
+- JP - Drug Abuse SME
+- Prathiba - R Shiny Dashboard Architect
+- Paddy - Spatial Data Guru
 
 
 
@@ -55,10 +77,9 @@ statistics.gov.uk
 
 - Why was this data selected?
 
-## Trend - D&G
+## Trend - Dumfries & Galloway
 
-- Life expectancy over time for Dumfries & Galloway
-```{r, message=FALSE}
+```{r, message=FALSE, fig.width=9,fig.height=5}
 life_expectancy_clean %>%
   filter(type == "Local Authority",
          name == "Dumfries and Galloway",
@@ -80,12 +101,13 @@ life_expectancy_clean %>%
     y = "Life Expectancy (years)\n",
     colour = "Sex"
   ) +
-  ggtitle("Life Expectancy for Dumfries & Galloway")
+  ggtitle("Life Expectancy for Dumfries & Galloway") +
+  color_theme()
 ```
+
 ## Trend - Scotland
 
-- Life expectancy over time for Scotland
-```{r,message=FALSE}
+```{r,message=FALSE, fig.width=9,fig.height=5}
 life_expectancy_clean %>%
   filter(type == "Scotland",
          simd_quintiles == "All",
@@ -106,12 +128,13 @@ life_expectancy_clean %>%
     y = "Life Expectancy (years)\n",
     colour = "Sex"
   ) +
-  ggtitle("Life Expectancy for Scotland")
+  ggtitle("Life Expectancy for Scotland") +
+  color_theme()
 ```
 
 ## Rank
 - Overview
-- Plot
+- [plot placeholder]
 - Findings / key areas for business to focus on / disparity between areas
 
 
@@ -137,7 +160,7 @@ The overview is generally optimistic.  Whilst numbers are still higher than
 anyone would like, the long term trend shows a steady reduction in all age groups,
 especially the youngest age group of 16-35.
 
-- Plot
+- [plot placeholder]
 
 - Findings / key demographic for business to focus on
 
@@ -153,8 +176,6 @@ NHS Health Board or the more granular Local Authority areas.  Poverty is one
 factor along with an urban/rural divide.  Essentially the areas with the lowest
 proportion of smokers are more rural, and more affluent.  The opposite is also true.
 
-- Plot
-
 - Findings / key areas for business to focus on
 More work needs to be in less affluent areas, especially in the traditional
 industrial areas,  to further reduce the rate of smoking.
@@ -163,13 +184,15 @@ industrial areas,  to further reduce the rate of smoking.
 # Key findings - Drug abuse | Jonathan
 
 ## The data
-- Scottish Drug Misuse
-- Source
-- Why it was chosen
+- Scottish Drug Misuse Database
+- https://www.opendata.nhs.scot/
+- Published by Public Health Scotland - the national public health body for Scotland
+- Why was this data selected?
+
 
 ## Trend by gender  
 
-```{r, message=FALSE}
+```{r, message=FALSE, fig.width=9,fig.height=5}
 sdmd_combined_plus_zones %>%
   filter(sex != "All") %>%
   filter(number_assessed != 0) %>%
@@ -180,12 +203,20 @@ sdmd_combined_plus_zones %>%
   summarise(number_assessed_total = sum(number_assessed)) %>%
   ggplot(aes(x = year, y = number_assessed_total, group = sex, colour = sex)) +
   geom_point() +
-  geom_line()
+  geom_line() +
+  theme(axis.text.x = element_text(angle = 45, vjust = 0.5, hjust = 1)) +
+  labs(
+    title = "Numbers assessed at specialist drug treatment centres over time",
+    subtitle = "By gender\n",
+    x = "\nNumber assessed\n",
+    y = "\nYear\n",
+  ) +
+  color_theme()
 ```
 
 ## Trend by age group  
 
-```{r}
+```{r, fig.width=9,fig.height=5}
 sdmd_combined_plus_zones %>%
   filter(age != "All" &
          age != "Unknown" &
@@ -197,28 +228,42 @@ sdmd_combined_plus_zones %>%
   summarise(number_assessed_total = sum(number_assessed), .groups = "drop") %>%
   ggplot(aes(x = year, y = number_assessed_total, group = age, colour = age)) +
   geom_point() +
-  geom_line()
+  geom_line() +
+  theme(axis.text.x = element_text(angle = 45, vjust = 0.5, hjust = 1)) +
+  labs(
+    title = "Numbers assessed at specialist drug treatment centres over time",
+    subtitle = "By age group\n",
+    x = "\nYear\n",
+    y = "\nNumber of people assessed\n"
+    ) +
+  color_theme()
 ```
 
 
 ## Rank  
 
-```{r, message=FALSE}
- sdmd_combined_plus_zones %>%
+```{r, message=FALSE, fig.width=9,fig.height=5}
+sdmd_combined_plus_zones %>% 
   filter(type == "NHS Health Board",
              year == "2018/19",
-             sex == "All") %>%
-      arrange(desc(number_assessed)) %>%
-      head(5) %>%
+             sex == "All",
+             name != "Shetland" & 
+             name != "Western Isles") %>%
+      group_by(name) %>% 
+      summarise(total_number_assessed = sum(number_assessed)) %>% 
+      arrange(desc(total_number_assessed)) %>% 
       ggplot() +
-      aes(x = reorder(name, number_assessed), y = number_assessed) +
+      aes(x = reorder(name, total_number_assessed), y = total_number_assessed) +
       geom_col() +
-      ggtitle("Five Highest Areas by Number of Drug Users in Treatment (Health Boards)") +
       theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
       labs(
-        x = "\nData Zone",
-        y = "Number of Patients Assessed\n"
-      )
+        title = "Numbers assessed by area",
+        subtitle = "NHS Health Boards\n",
+        x = "Data Zone",
+        y = "\nNumber 
+        assessed\n"
+      )+
+  color_theme()
 ```
 
 

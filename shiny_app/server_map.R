@@ -97,7 +97,9 @@ get_group_choices <- function(topic, breakdown){
   } else if (topic == "Drug Abuse"){
     choices <- sdmd_combined_plus_zones
   } else if (topic == "Smoking"){
-    choices <- smoking_clean
+    choices <- smoking_clean %>%
+      mutate(age = as_factor(age)) %>%
+      mutate(age = fct_relevel(age, c("All","16-34","35-64","16-64","65 and over")))
   }
   
   if (breakdown == "None"){

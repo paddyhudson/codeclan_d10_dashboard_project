@@ -61,6 +61,11 @@ sdmd_combined_plus_zones <- sdmd_combined_clean %>%
                        "spc" = "Scottish Parliamentary Constituencies"
   ))
 
+#set age factors
+
+sdmd_combined_plus_zones <- sdmd_combined_plus_zones %>% 
+  mutate(age = as_factor(age))
+
 # commented out code to convert 20XX/XX to YYYY
 # year = as.integer(recode(year, "2006/07" = "2007",
 #                          "2007/08" = "2008",

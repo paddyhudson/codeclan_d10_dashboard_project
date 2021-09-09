@@ -2,7 +2,7 @@
 title: "D10 Dashboard Project - Public Health Priorities for Scotland"
 author: "D10 Data Solutions"
 date: "09/09/2021"
-output: 
+output:
   ioslides_presentation:
         widescreen: true
         css: styles.css
@@ -16,9 +16,14 @@ library(tidyverse)
 library(here)
 ```
 ```{r, include=FALSE}
-sdmd_combined_plus_zones <- 
+sdmd_combined_plus_zones <-
   read_csv(here("clean_data/sdmd_combined_plus_zones.csv"))
 
+life_expectancy_clean <-
+  read_csv(here("clean_data/life_expectancy.csv"))
+
+sdmd_combined_plus_zones %>%
+distinct(age)
 ```
 
 
@@ -38,26 +43,76 @@ sdmd_combined_plus_zones <-
 
 # Key findings - Life expectancy | Derek
 
-## The data
-- Data set used
-- Source
-- Why it was chosen
+## The Data
 
-## Trend
-- Overview
-- Plot
-- Findings / key demographic for business to focus on
+- What is life expectancy and why it was chosen?
+
+Life expectancy is a statistical measure of the average time an organism is expected to live, based on the year of its birth, its current age and any other demographic factors including sex and geographic area.
+
+- The source of the data
+
+statistics.gov.uk
+
+- Why was this data selected?
+
+## Trend - D&G
+
+- Life expectancy over time for Dumfries & Galloway
+```{r, message=FALSE}
+life_expectancy_clean %>%
+  filter(type == "Local Authority",
+         name == "Dumfries and Galloway",
+         simd_quintiles == "All",
+         urban_rural_classification == "All",
+         sex != "All",
+         age == 0,
+         date_code %in% c("1991-1993", "1993-1995", "1995-1997", "1997-1999",
+                   "1999-2001", "2001-2003", "2003-2005", "2005-2007",
+                   "2007-2009", "2009-2011", "2011-2013", "2013-2015",
+                   "2015-2017", "2017-2019")) %>%
+  ggplot() +
+  aes(x = date_code, y = le_value, group = sex, colour = sex) +
+  geom_line() +
+  geom_ribbon(aes(ymax = le_upper_ci, ymin = le_lower_ci), alpha = 0.25, colour = NA) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5)) +
+  labs(
+    x = "\nYear",
+    y = "Life Expectancy (years)\n",
+    colour = "Sex"
+  ) +
+  ggtitle("Life Expectancy for Dumfries & Galloway")
+```
+## Trend - Scotland
+
+- Life expectancy over time for Scotland
+```{r,message=FALSE}
+life_expectancy_clean %>%
+  filter(type == "Scotland",
+         simd_quintiles == "All",
+         urban_rural_classification == "All",
+         sex != "All",
+         age == 0,
+         date_code %in% c("1991-1993", "1993-1995", "1995-1997", "1997-1999",
+                   "1999-2001", "2001-2003", "2003-2005", "2005-2007",
+                   "2007-2009", "2009-2011", "2011-2013", "2013-2015",
+                   "2015-2017", "2017-2019")) %>%
+  ggplot() +
+  aes(x = date_code, y = le_value, group = sex, colour = sex) +
+  geom_line() +
+  geom_ribbon(aes(ymax = le_upper_ci, ymin = le_lower_ci), alpha = 0.25, colour = NA) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5)) +
+  labs(
+    x = "\nYear",
+    y = "Life Expectancy (years)\n",
+    colour = "Sex"
+  ) +
+  ggtitle("Life Expectancy for Scotland")
+```
 
 ## Rank
 - Overview
 - Plot
 - Findings / key areas for business to focus on / disparity between areas
-
-## Map
-- Overview
-- Plot
-- Findings / key areas for business to focus on
-
 
 
 # Key findings - Smoking | John Paul
@@ -71,15 +126,15 @@ https://statistics.gov.scot/resource?uri=http%3A%2F%2Fstatistics.gov.scot%2Fdata
 
 - Why it was chosen
 Originally, Mental Wellbeing was selected for the project but the data quantity
-was not enough for our purposes.  We chose Smoking as two of the Scottish 
-Government's National Performance Framework (NPF) National Indicators are 
-relevant to smoking. There is a strong Public Health focus on reducing the 
+was not enough for our purposes.  We chose Smoking as two of the Scottish
+Government's National Performance Framework (NPF) National Indicators are
+relevant to smoking. There is a strong Public Health focus on reducing the
 proportion of adults who smoke.
 
 ## Trend
 - Overview
 The overview is generally optimistic.  Whilst numbers are still higher than
-anyone would like, the long term trend shows a steady reduction in all age groups, 
+anyone would like, the long term trend shows a steady reduction in all age groups,
 especially the youngest age group of 16-35.
 
 - Plot
@@ -93,53 +148,53 @@ especially the youngest age group of 16-35.
 
 ## Map
 - Overview
-There are huge variations around the country, whether they be measured by 
-NHS Health Board or the more granular Local Authority areas.  Poverty is one 
+There are huge variations around the country, whether they be measured by
+NHS Health Board or the more granular Local Authority areas.  Poverty is one
 factor along with an urban/rural divide.  Essentially the areas with the lowest
 proportion of smokers are more rural, and more affluent.  The opposite is also true.
 
 - Plot
 
 - Findings / key areas for business to focus on
-More work needs to be in less affluent areas, especially in the traditional 
+More work needs to be in less affluent areas, especially in the traditional
 industrial areas,  to further reduce the rate of smoking.
 
 
 # Key findings - Drug abuse | Jonathan
 
 ## The data
-- Scottish Drug Misuse 
+- Scottish Drug Misuse
 - Source
 - Why it was chosen
 
 ## Trend by gender  
 
 ```{r, message=FALSE}
-sdmd_combined_plus_zones %>% 
-  filter(sex != "All") %>% 
+sdmd_combined_plus_zones %>%
+  filter(sex != "All") %>%
   filter(number_assessed != 0) %>%
   filter(!is.na(number_assessed)) %>%
-  filter(year != "2013/14") %>% 
-  arrange(year) %>% 
-  group_by(year, sex) %>% 
-  summarise(number_assessed_total = sum(number_assessed)) %>% 
+  filter(year != "2013/14") %>%
+  arrange(year) %>%
+  group_by(year, sex) %>%
+  summarise(number_assessed_total = sum(number_assessed)) %>%
   ggplot(aes(x = year, y = number_assessed_total, group = sex, colour = sex)) +
   geom_point() +
   geom_line()
 ```
-  
+
 ## Trend by age group  
 
 ```{r}
-sdmd_combined_plus_zones %>% 
+sdmd_combined_plus_zones %>%
   filter(age != "All" &
          age != "Unknown" &
-         year != "2013/14") %>% 
+         year != "2013/14") %>%
   filter(number_assessed != 0) %>%
-  filter(!is.na(number_assessed)) %>% 
-  arrange(year) %>% 
-  group_by(year, age) %>% 
-  summarise(number_assessed_total = sum(number_assessed), .groups = "drop") %>% 
+  filter(!is.na(number_assessed)) %>%
+  arrange(year) %>%
+  group_by(year, age) %>%
+  summarise(number_assessed_total = sum(number_assessed), .groups = "drop") %>%
   ggplot(aes(x = year, y = number_assessed_total, group = age, colour = age)) +
   geom_point() +
   geom_line()
@@ -149,11 +204,11 @@ sdmd_combined_plus_zones %>%
 ## Rank  
 
 ```{r, message=FALSE}
- sdmd_combined_plus_zones %>% 
+ sdmd_combined_plus_zones %>%
   filter(type == "NHS Health Board",
              year == "2018/19",
              sex == "All") %>%
-      arrange(desc(number_assessed)) %>% 
+      arrange(desc(number_assessed)) %>%
       head(5) %>%
       ggplot() +
       aes(x = reorder(name, number_assessed), y = number_assessed) +

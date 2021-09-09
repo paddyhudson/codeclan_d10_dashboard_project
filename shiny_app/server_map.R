@@ -101,7 +101,7 @@ get_group_choices <- function(topic, breakdown){
   }
   
   if (breakdown == "None"){
-    return("")
+    return("No Breakdown Selected")
   } else if (breakdown == "Age"){
     choices <- choices %>% 
       select(age) %>% 

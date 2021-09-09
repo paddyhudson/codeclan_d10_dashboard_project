@@ -176,7 +176,7 @@ server <- function(input, output, session) {
     
     # Function to create ggplot
     rank_plot <- reactive(
-      plot_rank_object(filtered_rank_data(),input$rank_topic_input)
+      plot_rank_object(filtered_rank_data(),input$rank_topic_input,input$rank_select_input)
     )
     
     # create plot

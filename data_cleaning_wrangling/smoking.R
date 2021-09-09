@@ -60,6 +60,10 @@ smoking_clean <- smoking_clean %>%
 smoking_clean <- smoking_clean %>% 
   mutate(entry_id = row_number())
 
+smoking_clean <- smoking_clean %>% 
+  mutate(age = as_factor(age)) %>% 
+  mutate(age = fct_relevel(age, c("All","16-34","35-64","16-64","65 and over")))
+
 smoking_country <- smoking_clean %>% 
   filter(type == "Scotland",
          type_of_tenure == "All",

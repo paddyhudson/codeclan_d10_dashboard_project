@@ -69,9 +69,13 @@ color_theme <- function() {
 
 ## The Data
 
-- What is life expectancy and why was it chosen?
+- What is life expectancy and why it was chosen?
+
+Life expectancy is a statistical measure of the average time an organism is expected to live, based on the year of its birth, its current age and any other demographic factors including sex and geographic area.
 
 - The source of the data
+
+statistics.gov.uk
 
 - Why was this data selected?
 
@@ -100,11 +104,11 @@ life_expectancy_clean %>%
     y = "Life Expectancy (years)\n",
     colour = "Sex"
   ) +
-  ggtitle("Life Expectancy for Dumfries & Galloway") +
+  ggtitle("Life Expectancy for Dumfries & Galloway over time\n") +
   color_theme()
 ```
 
-## Trend - Scotland
+## Trend - Scotland  
 
 ```{r,message=FALSE, fig.width=9,fig.height=5}
 life_expectancy_clean %>%
@@ -128,14 +132,14 @@ life_expectancy_clean %>%
     y = "Life Expectancy (years)\n",
     colour = "Sex"
   ) +
-  ggtitle("Life Expectancy for Scotland") +
+  ggtitle("Life Expectancy for Scotland over time\n") +
   color_theme()
 ```
+  
 
 ## Rank - Local Authority
 
-- Life expectancy by local authority in the period 2017-2019
-```{r, message=FALSE}
+```{r, message=FALSE, fig.width=9,fig.height=5}
 life_expectancy_clean %>%
   filter(type == "Local Authority",
          simd_quintiles == "All",
@@ -150,12 +154,14 @@ life_expectancy_clean %>%
   theme_bw() +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
   labs(
+    title = "Life Expectancy by Local Authority",
+    subtitle = "2017-19",
     x = "\nLocal Authority",
     y = "Life Expectancy (years)\n",
     colour = "Sex"
-  ) +
-  ggtitle("Life Expectancy by Local Authority")
+  )
 ```
+
 ## Key Findings
 
 - In Scotland in 2017-2019, the life expectancy at birth was 77.1 years for males, and 81.1 years for females.
@@ -180,16 +186,12 @@ Framework (NPF)  National Indicators are relevant to smoking.
 There is a strong Public Health focus on reducing the proportion of adults who smoke.
 
 ## Trend
-- Overview
-
 The overview is optimistic.  
 
 Whilst numbers are still higher than anyone would like, the long term trend
 shows a steady reduction in all age groups.
 
-- [plot placeholder]
-
-```{r}
+```{r, message=FALSE, warning=FALSE, fig.width=9,fig.height=4}
 smoking %>%
   filter(smokes == "Yes",
          sex == "All") %>%
@@ -204,21 +206,18 @@ smoking %>%
   geom_line() +
    theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
    labs(
+    title = "Percentage of people who smoke",
+    subtitle = "By age group",
     x = "\nYear",
     y = "Current Smokers (%)\n"
-)
+  ) +
+  color_theme()
 ```
 
 ## Rank
-- Overview
-
-Where you live could affect whether you smoke or not.  
-
 In some areas you are 300% more likely to smoke than in other areas.
 
-- Plot
-
-```{r}
+```{r, message=FALSE, warning=FALSE, fig.width=9,fig.height=5}
 #  Highest Smoking rates per Local Authority area, in a 1 year period
 smoking %>%
   filter(type == "Local Authority",
@@ -236,14 +235,20 @@ smoking %>%
 head() %>%
    ggplot(aes(x = reorder(name, sm_percent), y = sm_percent)) +
   geom_col() +
-   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+   theme(axis.text.x = element_text(angle = 45, vjust = 0.5, hjust = 0.5)) +
    labs(
+    title = "Highest Smoking rates per Local Authority area",
+    subtitle = "2019",
     x = "\nLocal Authority",
-    y = "2019 Smoking Rate (%)\n")
+    y = "Smoking 
+    Rate (%)\n") +
+  color_theme()
 ```
 
+## Rank - continued
+Where you live dictates how likely you are to smoke.
 
-```{r}
+```{r, message=FALSE, warning=FALSE, fig.width=9,fig.height=4}
 #  Lowest Smoking rates per Local Authority area, in a 1 year period
 smoking %>%
   filter(type == "Local Authority",
@@ -261,18 +266,18 @@ smoking %>%
   head() %>%
    ggplot(aes(x = reorder(name, sm_percent), y = sm_percent)) +
   geom_col() +
-   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+   theme(axis.text.x = element_text(angle = 45, vjust = 0.5, hjust = 0.5)) +
    labs(
-    x = "\nLocal Authority",
-    y = "2019 Smoking Rate (%)\n")
+    title = "Lowest Smoking rates per Local Authority area",
+    subtitle = "2019",
+    x = "\nLocal Authority\n",
+    y = "Smoking 
+    Rate (%)\n") +
+  color_theme()
 ```
 
-- Findings / key areas for business to focus on / disparity between areas
-
-Where you live dictates how likely you are to smoke.
 
 ## Map
-- Overview
 
 There are huge variations around the country, whether they be measured by
 NHS Health Board or the more granular Local Authority areas.   
@@ -371,11 +376,6 @@ sdmd_combined_plus_zones %>%
   color_theme()
 ```
 
-
-
-## Conclusion | Jonathan
-- Recap brief
-- Recap of the main focus points for each of the three areas
 
 # Dashboard Demonstration | Prathiba & Paddy
 

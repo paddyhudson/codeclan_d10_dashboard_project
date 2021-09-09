@@ -79,9 +79,10 @@ ui <- dashboardPage(
                  tabPanel(title = tags$h2("Rank"), value = "rank_panel" ,
                           source("ui_rank.R", local = TRUE)$value),
                  tabPanel(title = tags$h2("Map"),value = "map_panel",  
-                          source("ui_map.R", local = TRUE)$value),
-                 tabPanel(title = tags$h2("About"),value = "about_panel",  
-                          source("ui_about.R", local = TRUE)$value)
+                          source("ui_map.R", local = TRUE)$value)
+                 #,
+                 #tabPanel(title = tags$h2("About"),value = "about_panel",  
+                #          source("ui_about.R", local = TRUE)$value)
                )
    
   )

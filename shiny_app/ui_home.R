@@ -8,11 +8,6 @@
 
 
 ui <- fluidPage(
-  
-  fluidRow(tags$br()),
-  fluidRow(tags$br()),
-  fluidRow(tags$br()),
-  fluidRow(tags$br()),
   fluidRow(tags$br()),
   fluidRow(
   box(
@@ -95,7 +90,6 @@ The data published by Public Health Scotland contains information on the number 
 <p style='text-align:justify'>Two of the Scottish Government's National Performance Framework (NPF) National Indicators are relevant to smoking. There is a specific indicator on reducing the proportion of adults who are current smokers, as well as a more general indicator on reducing premature mortality (deaths from all causes in those aged under 75), for which smoking is a significant contributory factor. 
 The data published by the Scottish Government contains information on current smokers by current smokers by tenure, household type, age, sex and disability.</p>
 ")),
-  fluidRow(tags$br()),
   fluidRow(tags$br()),
   fluidRow(tags$br())
 )

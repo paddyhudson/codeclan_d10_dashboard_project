@@ -126,7 +126,7 @@ plot_sm_rank_object <- function(data, select_input) {
       ylim(0, 100) +
       theme(axis.text.x = element_text(angle = 45, vjust = 0.5, hjust = 1)) +
       labs(
-        x = "Name",
+        x = "Data Zone",
         y = "Number of Smokers (%)\n"
       ) +
     scale_fill_distiller(palette = "YlGn")+
@@ -140,7 +140,7 @@ plot_sm_rank_object <- function(data, select_input) {
       ylim(0, 100) +
       theme(axis.text.x = element_text(angle = 45, vjust = 0.5, hjust = 1)) +
       labs(
-        x = "Name",
+        x = "Data Zone",
         y = "Number of Smokers (%)\n"
       ) +
       scale_fill_distiller(palette = "YlOrRd")+

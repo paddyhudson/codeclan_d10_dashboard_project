@@ -23,18 +23,10 @@ select_drug_data <- function(user_choice, input_name, input_demographic) {
         arrange(year) %>% 
         group_by(year, age) %>% 
         summarise(number_assessed_total = sum(number_assessed), .groups = "drop")
-               # simd_quintiles == "All",
-               # urban_rural_classification == "All"
         
     }
     else{
       sdmd_combined_plus_zones %>%
-        # group_by(name, date_code, sex) %>% 
-        # summarise(mean_le = mean(le_value),
-        #           mean_le_lower_ci = mean(le_lower_ci),
-        #           mean_le_upper_ci = mean(le_upper_ci),
-        #           .groups = "drop"
-        # ) %>% 
         filter(name == input_name,
                sex %in% input_demographic) %>% 
         filter(number_assessed != 0) %>% 
@@ -54,42 +46,67 @@ plot_drugs_object <- function(data, user_choice) {
     data %>% 
       ggplot(aes(x = year, y = number_assessed_total, group = age, colour = age)) +
       geom_point() +
-      geom_line()
-    
-      # ggplot() +
-      # aes(x = date_code, y = le_value, group = age, colour = age) +
-      # geom_line() +
-      # geom_point() +
-      # geom_ribbon(aes(ymax = le_upper_ci, ymin = le_lower_ci), alpha = 0.25, colour = NA) +
-      # theme(axis.text.x = element_text(angle = 45, vjust = 0.5, hjust = 1)) +
-      # labs(
-      #   x = "\n\nYear",
-      #   y = "Life Expectancy (years)\n",
-      #   colour = "Age"
-      # ) +
-      # color_theme()  
+      geom_line() +
+      theme(axis.text.x = element_text(angle = 45, vjust = 0.5, hjust = 1)) +
+      labs(
+        x = "Data Zone",
+        y = "Number of Patients Assessed\n",
+        colour = "Age"
+      )+
+      color_theme()  
   }
   else {
     
     data %>% 
       ggplot(aes(x = year, y = number_assessed_total, group = sex, colour = sex)) +
       geom_point() +
-      geom_line()
-      
-      # ggplot() +
-      # aes(x = date_code, y = mean_le, group = sex, colour = sex) +
-      # geom_line() +
-      # geom_point() +
-      # geom_ribbon(aes(ymax = mean_le_lower_ci, ymin = mean_le_lower_ci), alpha = 0.25, colour = NA) +
-      # theme(axis.text.x = element_text(angle = 45, vjust = 0.5, hjust = 1)) +
-      # labs(
-      #   x = "\n\nYear",
-      #   y = "Life Expectancy (years)\n",
-      #   colour = "Sex"
-      # )+
-      # color_theme()
+      geom_line()+
+      theme(axis.text.x = element_text(angle = 45, vjust = 0.5, hjust = 1)) +
+      labs(
+        x = "Data Zone",
+        y = "Number of Patients Assessed\n", 
+        colour = "Age"
+      )+
+      color_theme()
     
   }
 }
 
 
+select_drugs_rank_data <- function(sex_input, rank_area_input, select_input) {
+  
+  if (select_input == "Top 5"){
+  sdmd_combined_plus_zones %>%
+    filter(type == rank_area_input,
+           year == "2018/19",
+           sex == sex_input) %>%
+    arrange(desc(number_assessed)) %>% 
+    head(5)
+  }
+  else {
+    sdmd_combined_plus_zones %>%
+      filter(type == rank_area_input,
+             year == "2018/19",
+             sex == sex_input) %>%
+      arrange(desc(number_assessed)) %>% 
+      tail(5)
+    
+  }
+}
+
+# Function to plot the data based on selected data from user choice
+
+plot_drugs_rank_object <- function(data) {
+  
+    # Five Highest Areas for drug abuse
+    data %>%
+      ggplot() +
+      aes(x = reorder(name, number_assessed), y = number_assessed, fill = number_assessed) +
+      geom_col() +
+      theme(axis.text.x = element_text(angle = 45, vjust = 0.5, hjust = 1)) +
+      labs(
+        x = "Data Zone",
+        y = "Number of Patients Assessed\n"
+      )+
+      color_theme()
+  }

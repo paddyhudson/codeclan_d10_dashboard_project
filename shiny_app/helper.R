@@ -36,7 +36,7 @@ color_theme <- function() {
     panel.background = element_rect(fill = "white"),
     panel.grid =  element_line(colour = "grey85", linetype = 1, size = 0.5),
 
-    axis.text = element_text(colour = "blue", face = "italic", size = 12),
+    axis.text = element_text(colour = "blue", face = "italic", size = 14),
     axis.title.y = element_text(colour = "#1B732B" ,  size = 14, angle = 90),
     axis.title.x = element_text(colour = "#1B732B" ,  size = 14),
 

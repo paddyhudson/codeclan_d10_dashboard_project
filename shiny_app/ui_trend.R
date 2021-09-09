@@ -46,19 +46,20 @@ ui <- fluidPage(
                            choices = NULL,
                            inline = FALSE)
       )
-      ),
-      fluidRow(tags$br()),
-      fluidRow(tags$br()),
-      fluidRow(
-        downloadButton(label ="Download", "download_report")
       )
+      # ,
+      # fluidRow(tags$br()),
+      # fluidRow(tags$br()),
+      # fluidRow(
+      #   downloadButton(label ="Download", "download_report")
+      # )
       ),
   mainPanel(
     #Content to display the plot
     fluidRow(
              box(   
-               title = tags$h3(textOutput("topic", inline = TRUE),
-                               " based on ",
+               title = tags$h3("Representation of ",textOutput("topic", inline = TRUE),
+                               " data based on ",
                                textOutput("name", inline = TRUE),
                                " for the ",
                                textOutput("breakdown", inline = TRUE),

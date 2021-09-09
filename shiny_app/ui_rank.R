@@ -28,49 +28,39 @@ ui <- fluidPage(
         )),
       
       fluidRow(
-        selectInput("sex_input",
+        selectInput("rank_sex_input",
                     "Select Sex",
                     choices = c("All", "Male", "Female")
         )
       ),
       
       fluidRow(
-        selectInput("select_input",
+        radioButtons("rank_select_input",
                     "Selection",
                     choices = c("Top 5", "Bottom 5")
         )
       )
-      
-      # dropdown(
-      #   label = "Select one or more breakdown", status = "default",
-      #   checkboxGroupInput("rank_demographic_input",
-      #                      "",
-      #                      choices = NULL,
-      #                      inline = TRUE)
-      # )
     ),
     mainPanel(
       #Content to display the plot
       fluidRow(
         box(   
-          title = tags$h3(textOutput("rank_topic", inline = TRUE),
-                          " based on ",
-                          textOutput("rank_name", inline = TRUE),
-                          " for the ",
-                          textOutput("rank_breakdown", inline = TRUE),
-                          " Category  "
+          title = tags$h3("Representation of ",textOutput("rank_topic", inline = TRUE),
+                          "data for the  ",
+                          textOutput("rank_select", inline = TRUE),
+                          " Data Zone under ",
+                          textOutput("rank_area", inline = TRUE)
           ),
           width = 12, status = "primary",
           plotOutput("rank_distPlot")
         )
-        
       ),
       #Content to display the table
       fluidRow(
         box(
           width = 12,
           title = tags$h3("Table"),
-          tableOutput("rank_output_table")
+          DT::dataTableOutput("rank_output_table")
         )
       )
       

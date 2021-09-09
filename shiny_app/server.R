@@ -93,10 +93,9 @@ server <- function(input, output, session) {
     #This output variable is used in UI to display the plot title in Rank Tab
     output$rank_topic<- renderText({ input$rank_topic_input})
     output$rank_area <- renderText({ input$rank_area_input})
-    output$rank_name <- renderText({ input$rank_name_input})
-    output$rank_demographic <- renderText({input$rank_demographic_input})
-    output$rank_breakdown  <- renderText({input$rank_breakdown_input})
-
+    output$rank_sex <- renderText({ input$rank_sex_input})
+    output$rank_select <- renderText({input$rank_select_input})
+    
 # Update Inputs for Rank Page
 
   # Event to populate the area dynamically
@@ -150,51 +149,45 @@ server <- function(input, output, session) {
 
 # Server script for plots & table -------------------------------------
     
-    observeEvent(c(input$jumpToTrend, input$breakdown_input,input$name_input,input$demographic_input, input$topic_input,
-                   input$rank_topic_input, input$rank_area_input, input$sex_input, input$select_input), {
-  if(input$jumpToTrend){
-  filtered_data <- reactive(
-      select_data(input$breakdown_input,input$name_input,input$demographic_input, input$topic_input)
-    )
-
-    # Function to create ggplot
-    plot <- reactive(
-      plot_object(data = filtered_data(), input$breakdown_input, input$topic_input)
-    )
-
-    # create plot
-    output$distPlot <- renderPlot({
-      plot()
-    })
-
-    # data table to show the data displayed in the life expectancy plot
-    output$output_table <- renderDataTable({
-      filtered_data()
-    })
-  } else{
+# Server script for Trends Page -------------------------------------    
+      filtered_data <- reactive(
+          select_data(input$breakdown_input,input$name_input,input$demographic_input, input$topic_input)
+        )
     
-    filtered_data <- reactive(
-      select_rank_data(input$topic_input, input$sex_input, input$rank_area_input)
+        # Function to create ggplot
+        plot <- reactive(
+          plot_object(data = filtered_data(), input$breakdown_input, input$topic_input)
+        )
+    
+        # create plot
+        output$distPlot <- renderPlot({
+          plot()
+        })
+    
+        # data table to show the data displayed in the life expectancy plot
+        output$output_table <- renderDataTable({
+          filtered_data()
+        })
+# Server script for Rank Page -------------------------------------      
+        
+    filtered_rank_data <- reactive(
+      select_rank_data(input$rank_topic_input, input$rank_sex_input, input$rank_area_input,  input$rank_select_input)
     )
     
     # Function to create ggplot
-    plot <- reactive(
-      plot_rank_object(input$topic_input, filtered_data(), input$rank_area_input)
+    rank_plot <- reactive(
+      plot_rank_object(filtered_rank_data(),input$rank_topic_input)
     )
     
     # create plot
     output$rank_distPlot <- renderPlot({
-      plot()
+      rank_plot()
     })
     
     # data table to show the data displayed in the life expectancy plot
     output$rank_output_table <- renderDataTable({
-      filtered_data()
+      filtered_rank_data() 
     })
-  }
-    })   
-
-# Server script for Smoking  --------------------------------------------
 
 # Server script for Map  ------------------------------------------------
     map_area_input <- reactive(input$map_area_input)
@@ -256,26 +249,29 @@ server <- function(input, output, session) {
               select("Area Name", Value)
           })
 
-# Download script   -----------------------------------------------------
-output$download_report <- downloadHandler(
-
-  filename = "my_report.html",
-
-  content = function(file) {
-    src <- normalizePath('report.Rmd')
-    owd <- setwd(tempdir())
-    on.exit(setwd(owd))
-    file.copy(src, 'report.Rmd', overwrite = TRUE)
-    #all the info you need to pass to the output file
-    params <- list( output$distPlot, output$output_table)
-
-    out <- render('report.Rmd',
-                  output_format = pdf_document(),
-                  params = params,
-                  envir = new.env(parent = globalenv())
-    )
-
-    file.rename(out, file)
-  }
-)
+          
+#   output$plot <- renderPlot(plot(),width = 850, height = 425)
+#           
+# # Download script   -----------------------------------------------------
+# output$download_report <- downloadHandler(
+# 
+#   filename = "my_report.html",
+# 
+#   content = function(file) {
+#     src <- normalizePath('report.Rmd')
+#     owd <- setwd(tempdir())
+#     on.exit(setwd(owd))
+#     file.copy(src, 'report.Rmd', overwrite = TRUE)
+#     #all the info you need to pass to the output file
+#     params <- list( plot = plot  )
+# 
+#     out <- render('report.Rmd',
+#                   output_format = pdf_document(),
+#                   params = params,
+#                   envir = new.env(parent = globalenv())
+#     )
+# 
+#     file.rename(out, file)
+#   }
+# )
 }

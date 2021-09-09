@@ -57,11 +57,22 @@ smoking_clean <- smoking_clean %>%
   mutate_at("sm_upper_ci", as.numeric) %>% 
   mutate_at("sm_percent", as.numeric)
 
+smoking_clean <- smoking_clean %>% 
+  mutate(entry_id = row_number())
+
+smoking_country <- smoking_clean %>% 
+  filter(type == "Scotland",
+         type_of_tenure == "All",
+         household_type == "All",
+         sex == "All",
+         long_term_condition == "All",
+         age == "All"
+  )
 
 # Write the clean data ----------------------------------------------------
 
 # Write the cleaned data into clean_data folder
 
-write_csv(smoking_clean, here("clean_data/smoking.csv"))
+#write_csv(smoking_clean, here("clean_data/smoking.csv"))
 
 # End of code -------------------------------------------------------------

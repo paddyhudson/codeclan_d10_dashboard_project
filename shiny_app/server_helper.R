@@ -57,12 +57,12 @@ choose_name <- function (topic_input, area_input)
 choose_breakdown_topic <- function(topic_input, break_down, area_input, name_input)
 {
   if( topic_input == "Life Expectancy")
-  { choices <- c("Gender", "SIMD") }
+  { choices <- "Gender" }
   else{
     if(topic_input == "Drug Abuse")
     {choices <- c("Gender", "Age")}
     else 
-    {choices <- c("Gender", "Age", "Long Term Condition")}
+    {choices <- c("Gender", "Age", "Tenure Type")}
   }
     return (choices)
 }
@@ -83,7 +83,8 @@ if(break_down == "Age")
 {
   choices <- input_table %>%
     filter(type %in% area_input,
-           name %in% name_input) %>%
+           name %in% name_input,
+           !(age %in% (c("All","16-64")))) %>%
     distinct(age) %>% 
     arrange(age) %>% 
     flatten_chr()
@@ -92,7 +93,8 @@ if(break_down == "Age")
 if(break_down == "Gender"){
   choices <- input_table %>%
     filter(type %in% area_input,
-           name %in% name_input) %>%
+           name %in% name_input,
+           sex != "All") %>%
     distinct(sex) %>% 
     arrange(sex) %>% 
     flatten_chr()
@@ -106,7 +108,7 @@ if(break_down == "SIMD"){
      flatten_chr()
    return (choices)
   
-}  
+}
 }
 
 # Since there is only one render Plot which displays dynamically based on user input,
@@ -124,8 +126,13 @@ select_data <- function( user_choice, input_name, input_demographic, topic_input
   else
   {
     if(topic_input == "Drug Abuse")  {
-      #Function available in the drug.R
+      #Function available in the server_drugs.R
       select_drug_data(user_choice, input_name, input_demographic)
+    }
+    else
+    {
+      #Function available in the server_smoking.R
+      select_smoke_data(user_choice, input_name, input_demographic)
     }
   }
 }
@@ -141,6 +148,50 @@ plot_object <- function( data, user_choice, topic_input) {
   {
     if(topic_input == "Drug Abuse")  {
       plot_drugs_object(data, user_choice)
+    }
+    else 
+      {
+      plot_smoke_object(data, user_choice)
+    }
+  }
+}
+
+# Function to select the data based on user choice---------------
+select_rank_data <- function(topic_input, sex_input, rank_area_input,select_input) {
+  
+  if(topic_input == "Life Expectancy")
+  {
+    #Function available in the server_life_expectancy.R
+      select_life_rank_data(sex_input, rank_area_input,select_input )
+  }
+  else
+  {
+    if(topic_input == "Drug Abuse")  {
+      #Function available in the drug.R
+      select_drugs_rank_data(sex_input, rank_area_input, select_input)
+    }
+    else {
+        #Function available in the drug.R
+        select_sm_rank_data(sex_input,rank_area_input, select_input )  
+    }
+  }
+}
+
+# Function to plot the data based on user choice------------------------------
+plot_rank_object <- function(data, topic_input) {
+  
+  if(topic_input == "Life Expectancy")
+  {
+    plot_life_rank_object(data )
+  }
+  else
+  {
+    if(topic_input == "Drug Abuse")  {
+      plot_drugs_rank_object(data)
+    }
+    else{
+        plot_sm_rank_object(data)
+      
     }
   }
 }

@@ -33,7 +33,8 @@ ui <- dashboardPage(
                                           }
                                           h1 {
                                             font-family: 'Cookie', serif;
-                                            color:639fbf;
+                                            color:#ffffff;
+                                            font-size : 80px;  
                                           }
                                           h2 {
                                             font-family: 'Crimson Text', cursive;

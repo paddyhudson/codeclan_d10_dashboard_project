@@ -1,40 +1,62 @@
-get_map_data <- function(topic_input, area_input)
+get_map_data <- function(topic, area, breakdown, group)
 {  
   
   #choose spatial data
   
-  spatial_data <- switch(area_input,
+  spatial_data <- switch(area,
                          "NHS Health Board" = hb_zones,
                          "Local Authority" = la_zones)
   
   #choose topic data
   topic_data <- switch(
-    topic_input,
+    topic,
     "Life Expectancy" = life_expectancy_clean,
-    "Drug Abuse" = sdmd_combined_plus_zones,
+    "Drug Abuse" = sdmd_combined_plus_zones %>% drop_na(),
     "Smoking" = smoking_clean
-  ) %>%
-    filter(type == area_input,
-           sex == "All",
-           age == switch(
-             topic_input,
-             "Life Expectancy" = 0,
-             "Drug Abuse" = "All",
-             "Smoking" = "All"
-           )) %>%
-    select(-name)
+  )
   
-  if (topic_input == "Life Expectancy") {
+   if (breakdown == "Age"){
+    topic_data <- topic_data %>% 
+      filter(type == area,
+             sex == "All",
+             age == group) %>%
+      select(-name) 
+   } else if (breakdown == "Gender"){
+    topic_data <- topic_data %>% 
+       filter(type == area,
+              sex == group,
+              age == switch(
+                topic,
+                "Life Expectancy" = 0,
+                "Drug Abuse" = "All",
+                "Smoking" = "All"
+                )) %>%
+       select(-name)
+   } else {
+     topic_data <- topic_data %>% 
+       filter(type == area,
+              sex == "All",
+              age == switch(
+                topic,
+                "Life Expectancy" = 0,
+                "Drug Abuse" = "All",
+                "Smoking" = "All"
+              )) %>%
+       select(-name)
+   }
+  
+  
+  if (topic == "Life Expectancy") {
     topic_data <- topic_data %>%
       filter(date_code == "2017-2019") %>%
       rename(value = le_value) %>%
       mutate(label = "Life Expectancy")
-  } else if (topic_input == "Drug Abuse") {
+  } else if (topic == "Drug Abuse") {
     topic_data <- topic_data %>%
       filter(year == "2017/18") %>%
       rename(value = number_assessed) %>%
       mutate(label = "Number Assessed")
-  } else if (topic_input == "Smoking") {
+  } else if (topic == "Smoking") {
     topic_data <- topic_data %>%
       filter(
         date_code == 2019,
@@ -49,11 +71,11 @@ get_map_data <- function(topic_input, area_input)
   
   #join to get map data
   map_data <- spatial_data %>%
-    left_join(topic_data, by = c("code" = "feature_code"))
+    inner_join(topic_data, by = c("code" = "feature_code"))
   
   #Create colour palette
   
-  if (topic_input == "Life Expectancy"){
+  if (topic == "Life Expectancy"){
     map_palette <- colorNumeric("viridis", domain = range(map_data$value), reverse = TRUE)
     map_data <- map_data %>% arrange(desc(value))
   } else {
@@ -65,4 +87,35 @@ get_map_data <- function(topic_input, area_input)
     mutate(colour = map_palette(value))
   
   return(map_data)
+}
+
+
+get_group_choices <- function(topic, breakdown){
+  
+  if (topic == "Life Expectancy"){
+    choices <- life_expectancy_clean
+  } else if (topic == "Drug Abuse"){
+    choices <- sdmd_combined_plus_zones
+  } else if (topic == "Smoking"){
+    choices <- smoking_clean
+  }
+  
+  if (breakdown == "None"){
+    return("")
+  } else if (breakdown == "Age"){
+    choices <- choices %>% 
+      select(age) %>% 
+      unique() %>% 
+      arrange(age) %>% 
+      mutate(list = age)
+  } else if (breakdown == "Gender"){
+    choices <- choices %>% 
+      select(sex) %>% 
+      unique() %>% 
+      arrange(sex) %>% 
+      mutate(list = sex)
+  }
+  
+  return(choices$list)
+  
 }

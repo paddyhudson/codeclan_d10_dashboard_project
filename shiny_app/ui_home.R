@@ -31,7 +31,7 @@ ui <- fluidPage(
                               padding-right : 25% ;
                               padding-bottom :25% ;  
                               color: #ffffff;
-                              background-color: #a6cbe3; 
+                              background-color: #3481ad; 
                               border-color: #ffffff",
                      inputId = 'jumpToTrend',
                      label = tags$h1("Trend"), 
@@ -49,7 +49,7 @@ ui <- fluidPage(
                                 padding-right : 25% ;
                                 padding-bottom :25% ;   
                                 color: #ffffff;
-                                background-color: #e3a6a6; 
+                                background-color: #f5b942; 
                                 border-color:  #ffffff",
                      inputId = 'jumpToRank',
                      label = tags$h1("Rank"),
@@ -66,7 +66,7 @@ ui <- fluidPage(
                         padding-right : 25% ;
                         padding-bottom :25% ;   
                         color: #ffffff;
-                        background-color: #a6e3ac; 
+                        background-color: #33b07a; 
                         border-color:  #ffffff",
                     inputId ='jumpToMap',
                     label = tags$h1("Map"),
@@ -80,12 +80,6 @@ ui <- fluidPage(
   )
   ),
 
-  fluidRow(tags$br()),
-  fluidRow(tags$br()),
-  fluidRow(tags$br()),
-  fluidRow(tags$br()),
-  fluidRow(tags$br()),
-  fluidRow(tags$br()),
   fluidRow(tags$br()),
   fluidRow(tags$br()),
   fluidRow(tags$br()),

@@ -1,8 +1,10 @@
 ---
-title: "My Title"
-author: "My Name"
-output: html_document
+output: pdf_document
 params:
-  data1: NA
-  data2: NA
+  plot: NULL
 ---
+
+```{r}
+if (!is.null(params$plot))
+  params$plot()
+```

@@ -1,0 +1,20 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+# Life Expectancy
+
+What is life expectancy
+Life expectancy is a statistical measure of the average time an organism is expected to live, based on the year of its birth, its current age and any other demographic factors including sex and geographic area. It is a useful statistic as it provides a snapshot of the health of a population and allows identification of inequalities between populations, or geographic areas within a country.
+
+Source of the data?
+The dataset used was published by the Scottish Government (statistics.gov.uk) and contains information on life expectancy from birth and in age groups of 4 years until 90 years, geographic area data, sex, for a period from 1991 through to 2019.
+
+Why was the data chosen?
+The data fit the brief and contain sufficient information in order to arrive at, hopefully, meaningful conclusions. The data is designated as National Statistics by the UK Statistics Authority enusring that they meet the highest standards of trustworthiness, quality and public value.
+
+Overview of the trend
+xxx
+
+PLot

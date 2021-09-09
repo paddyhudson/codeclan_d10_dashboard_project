@@ -62,9 +62,12 @@ sdmd_combined_plus_zones <- sdmd_combined_clean %>%
   ))
 
 #set age factors
-
 sdmd_combined_plus_zones <- sdmd_combined_plus_zones %>% 
-  mutate(age = as_factor(age))
+  mutate(age = recode(age, "Under 20yrs old" = "0 to 20 yrs old")) %>% 
+  filter(age != "Unknown")
+
+#sdmd_combined_plus_zones <- sdmd_combined_plus_zones %>% 
+#  mutate(age = as_factor(age))
 
 # commented out code to convert 20XX/XX to YYYY
 # year = as.integer(recode(year, "2006/07" = "2007",

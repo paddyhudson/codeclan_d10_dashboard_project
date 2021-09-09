@@ -62,7 +62,7 @@ choose_breakdown_topic <- function(topic_input, break_down, area_input, name_inp
     if(topic_input == "Drug Abuse")
     {choices <- c("Gender", "Age")}
     else 
-    {choices <- c("Gender", "Age", "Tenure Type")}
+    {choices <- c("Gender", "Age")}
   }
     return (choices)
 }

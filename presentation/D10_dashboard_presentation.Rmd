@@ -19,6 +19,8 @@ library(here)
 sdmd_combined_plus_zones <-
   read_csv(here("clean_data/sdmd_combined_plus_zones.csv"))
 
+smoking <- read_csv(here("clean_data/smoking.csv"))
+
 life_expectancy_clean <-
   read_csv(here("clean_data/life_expectancy.csv"))
 
@@ -67,13 +69,9 @@ color_theme <- function() {
 
 ## The Data
 
-- What is life expectancy and why it was chosen?
-
-Life expectancy is a statistical measure of the average time an organism is expected to live, based on the year of its birth, its current age and any other demographic factors including sex and geographic area.
+- What is life expectancy and why was it chosen?
 
 - The source of the data
-
-statistics.gov.uk
 
 - Why was this data selected?
 
@@ -95,6 +93,7 @@ life_expectancy_clean %>%
   aes(x = date_code, y = le_value, group = sex, colour = sex) +
   geom_line() +
   geom_ribbon(aes(ymax = le_upper_ci, ymin = le_lower_ci), alpha = 0.25, colour = NA) +
+  theme_bw() +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5)) +
   labs(
     x = "\nYear",
@@ -122,6 +121,7 @@ life_expectancy_clean %>%
   aes(x = date_code, y = le_value, group = sex, colour = sex) +
   geom_line() +
   geom_ribbon(aes(ymax = le_upper_ci, ymin = le_lower_ci), alpha = 0.25, colour = NA) +
+  theme_bw() +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5)) +
   labs(
     x = "\nYear",
@@ -132,10 +132,36 @@ life_expectancy_clean %>%
   color_theme()
 ```
 
-## Rank
-- Overview
-- [plot placeholder]
-- Findings / key areas for business to focus on / disparity between areas
+## Rank - Local Authority
+
+- Life expectancy by local authority in the period 2017-2019
+```{r, message=FALSE}
+life_expectancy_clean %>%
+  filter(type == "Local Authority",
+         simd_quintiles == "All",
+         urban_rural_classification == "All",
+         sex != "All",
+         age == 0,
+         date_code == "2017-2019") %>%
+  ggplot() +
+  aes(x = reorder(name, le_value), y = le_value, group = sex, colour = sex) +
+  geom_line() +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+  labs(
+    x = "\nLocal Authority",
+    y = "Life Expectancy (years)\n",
+    fill = "Sex"
+  ) +
+  ggtitle("Life Expectancy by Local Authority")
+```
+## Key Findings
+
+- In Scotland in 2019-2019, the life expectancy at birth was 77.1 years for males, and 81.1 years for females.
+- Life expectancy since 199-1993 has increased but has largely remained unchanged since 2013-2015.
+- Female life expectancy is lowest at birth in Glasgow (78.5 years) and highest in East Renfrewshire (84 years).
+- Male life expectancy is lowest at birth in Glasgow (73.6 years) and highest in East Dunbartonshire (80.5 years).
+- The majority of Scotland's council areas have seen a slow down in life expectancy since 2013-2015, with some seeing a decrease.
 
 
 # Key findings - Smoking | John Paul
@@ -145,40 +171,119 @@ life_expectancy_clean %>%
 Smoking - Scottish Survey Core Questions
 
 - The data was sourced from:
-https://statistics.gov.scot/resource?uri=http%3A%2F%2Fstatistics.gov.scot%2Fdata%2Fsmoking-sscq
+statistics.gov.uk
 
 - Why it was chosen
-Originally, Mental Wellbeing was selected for the project but the data quantity
-was not enough for our purposes.  We chose Smoking as two of the Scottish
-Government's National Performance Framework (NPF) National Indicators are
-relevant to smoking. There is a strong Public Health focus on reducing the
-proportion of adults who smoke.
+We chose Smoking as two of the Scottish Government's National Performance
+Framework (NPF)  National Indicators are relevant to smoking.
+
+There is a strong Public Health focus on reducing the proportion of adults who smoke.
 
 ## Trend
 - Overview
-The overview is generally optimistic.  Whilst numbers are still higher than
-anyone would like, the long term trend shows a steady reduction in all age groups,
-especially the youngest age group of 16-35.
+
+The overview is optimistic.  
+
+Whilst numbers are still higher than anyone would like, the long term trend
+shows a steady reduction in all age groups.
 
 - [plot placeholder]
 
-- Findings / key demographic for business to focus on
+```{r}
+smoking %>%
+  filter(smokes == "Yes",
+         sex == "All") %>%
+
+  arrange(date_code) %>%
+  group_by(date_code, age) %>%
+  summarise(avg_rate = mean(sm_percent)) %>%
+
+
+  ggplot(aes(x = date_code, y = avg_rate, group = age, colour = age)) +
+  geom_point() +
+  geom_line() +
+   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+   labs(
+    x = "\nYear",
+    y = "Current Smokers (%)\n"
+)
+```
 
 ## Rank
 - Overview
+
+Where you live could affect whether you smoke or not.  
+
+In some areas you are 300% more likely to smoke than in other areas.
+
 - Plot
+
+```{r}
+#  Highest Smoking rates per Local Authority area, in a 1 year period
+smoking %>%
+  filter(type == "Local Authority",
+         type_of_tenure == "All",
+         age == "All",
+         household_type == "All",
+         sex == "All",
+         long_term_condition == "All",
+         smokes == "Yes",
+         date_code == "2019"
+  ) %>%
+ group_by(name, date_code, sm_percent) %>%
+  select(name, smokes, sm_percent) %>%
+  arrange(desc(sm_percent)) %>%
+head() %>%
+   ggplot(aes(x = reorder(name, sm_percent), y = sm_percent)) +
+  geom_col() +
+   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+   labs(
+    x = "\nLocal Authority",
+    y = "2019 Smoking Rate (%)\n")
+```
+
+
+```{r}
+#  Lowest Smoking rates per Local Authority area, in a 1 year period
+smoking %>%
+  filter(type == "Local Authority",
+         type_of_tenure == "All",
+         age == "All",
+         household_type == "All",
+         sex == "All",
+         long_term_condition == "All",
+         smokes == "Yes",
+         date_code == "2019"
+  ) %>%
+ group_by(name, date_code, sm_percent) %>%
+  select(name, smokes, sm_percent) %>%
+  arrange(sm_percent) %>%
+  head() %>%
+   ggplot(aes(x = reorder(name, sm_percent), y = sm_percent)) +
+  geom_col() +
+   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+   labs(
+    x = "\nLocal Authority",
+    y = "2019 Smoking Rate (%)\n")
+```
+
 - Findings / key areas for business to focus on / disparity between areas
+
+Where you live dictates how likely you are to smoke.
 
 ## Map
 - Overview
-There are huge variations around the country, whether they be measured by
-NHS Health Board or the more granular Local Authority areas.  Poverty is one
-factor along with an urban/rural divide.  Essentially the areas with the lowest
-proportion of smokers are more rural, and more affluent.  The opposite is also true.
 
-- Findings / key areas for business to focus on
-More work needs to be in less affluent areas, especially in the traditional
-industrial areas,  to further reduce the rate of smoking.
+There are huge variations around the country, whether they be measured by
+NHS Health Board or the more granular Local Authority areas.   
+
+Essentially the areas with the lowest proportion of smokers are more affluent. The
+opposite is also true.
+
+
+- Findings
+
+More work needs to be in less affluent areas to further reduce the rate of smoking.
 
 
 # Key findings - Drug abuse | Jonathan
@@ -243,15 +348,15 @@ sdmd_combined_plus_zones %>%
 ## Rank  
 
 ```{r, message=FALSE, fig.width=9,fig.height=5}
-sdmd_combined_plus_zones %>% 
+sdmd_combined_plus_zones %>%
   filter(type == "NHS Health Board",
              year == "2018/19",
              sex == "All",
-             name != "Shetland" & 
+             name != "Shetland" &
              name != "Western Isles") %>%
-      group_by(name) %>% 
-      summarise(total_number_assessed = sum(number_assessed)) %>% 
-      arrange(desc(total_number_assessed)) %>% 
+      group_by(name) %>%
+      summarise(total_number_assessed = sum(number_assessed)) %>%
+      arrange(desc(total_number_assessed)) %>%
       ggplot() +
       aes(x = reorder(name, total_number_assessed), y = total_number_assessed) +
       geom_col() +
@@ -260,7 +365,7 @@ sdmd_combined_plus_zones %>%
         title = "Numbers assessed by area",
         subtitle = "NHS Health Boards\n",
         x = "Data Zone",
-        y = "\nNumber 
+        y = "\nNumber
         assessed\n"
       )+
   color_theme()

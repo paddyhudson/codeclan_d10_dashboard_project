@@ -1,6 +1,10 @@
 ---
 title: "R Notebook"
-output: html_notebook
+output:
+  html_document:
+    df_print: paged
+  html_notebook: default
+  pdf_document: default
 ---
 
 # Life Expectancy
@@ -22,14 +26,19 @@ The data fits the brief and contain sufficient information in order to arrive at
 
 Unsurprisingly life expectancy, for a developed country such as Scotland, has increased over time.
 
+We also have available the 95% confidence limits which is shown as a grey ribbon superimposed over each trend. Which is the the range of values that the actual life expectancy value of the population is likely to lie within. Estimates from larger populations, such as Scotland as a whole, has smaller confidence intervals and are therefore more accurate estimates than compared with smaller populations such as local authorities.     
 
-Dumfries & Galloway
-- Male life expectancy has increased from approx. 72.5 years in 1991-1993 to 78 years in 2017-2019 (5.5 yrs). 
-- For females, that increase has been from approx. 77 years in 1991-1993 to just over 80 years in the period 2017-2019 (3 yrs).
+Dumfries & Galloway - my home area!
+- Male life expectancy has increased from approx. 72.5 years in 1991-1993 to 78 years in 2017-2019 
+An increase of 5.5 yrs. 
+- For females, that increase has been from approx. 77 years in 1991-1993 to just over 80 years in the period 2017-2019 
+An increase of 3 yrs.
 
 Scotland 
-- Life expectancy for males has increased from 71.5 years in 1991-1993 to 77.5 years in 2017-2019 (6yrs)
-- For females, life expectancy has increased from 76.5 years to 81.5 (5yrs) years for the same time period.
+- Life expectancy for males has increased from 71.5 years in 1991-1993 to 77.5 years in 2017-2019 
+An increase of 6 years
+- For females, life expectancy has increased from 76.5 years to 81.5 years for the same time period.
+An increase of 5 years
 
 For Scotland as a whole, we see that life expectancy has remained virtually unchanged since 2013-2015. This is evident in most of Scotland's council areas where life expectancy has stalled since 2013-2015 with some areas showing a decreasing life expectancy.
 
@@ -37,6 +46,7 @@ The reasons for this are complicated.
 
 Why this is the case is a complicated subject with many moving parts - but it may be attributed to cuts in social care, NHS spending, removal of subsidies, the global financial crisis in 2008, and drug and alcohol abuse.
 
-We also have available the 95% confidence limits which is shown as a grey ribbon superimposed over each trend. Which is the the range of values that the actual life expectancy value of the population is likely to lie within. Estimates from larger populations, such as Scotland as a whole, has smaller confidence intervals and are therefore more accurate estimates than compared with smaller populations such as local authorities.
-
 # Rank
+
+highest life expectancy by local authority and health board
+lowest life expectancy by local authority and health board

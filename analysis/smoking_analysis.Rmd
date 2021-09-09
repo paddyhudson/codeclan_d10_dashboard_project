@@ -82,15 +82,23 @@ smoking %>%
          type_of_tenure == "All",
          age == "All",
          household_type == "All",
-         sex != "All",
+         sex == "All",
          long_term_condition == "All",
-         smokes == "Yes"
+         smokes == "Yes",
+         date_code == "2019"
   ) %>%
  group_by(name, date_code, sm_percent) %>% 
   select(name, smokes, sm_percent) %>% 
   arrange(desc(sm_percent)) %>% 
-head()
+head() %>% 
+   ggplot(aes(x = reorder(name, sm_percent), y = sm_percent)) +
+  geom_col() +
+   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+   labs(
+    x = "\nLocal Authority",
+    y = "2019 Smoking Rate (%)\n")
 ```
+
 ```{r}
 #  Lowest Smoking rates per Local Authority area, in a 1 year period
 smoking %>% 
@@ -98,42 +106,45 @@ smoking %>%
          type_of_tenure == "All",
          age == "All",
          household_type == "All",
-         sex != "All",
+         sex == "All",
          long_term_condition == "All",
-         smokes == "Yes"
+         smokes == "Yes",
+         date_code == "2019"
   ) %>%
  group_by(name, date_code, sm_percent) %>% 
   select(name, smokes, sm_percent) %>% 
-  arrange(sm_percent) %>%
-  head() 
-```
-
-```{r}
-smoking %>%
-  filter(type == "Local Authority",
-         type_of_tenure != "All",
-         smokes =="Yes"
-         ) %>% 
-  group_by(type_of_tenure, sm_percent) %>% 
-  summarise(avg_by_tenure = mean(sm_percent, na.rm = TRUE)) %>% 
-filter(avg_by_tenure == max(avg_by_tenure))
-  
-  
-```
-
-```{r}
-smoking %>%
-  filter(type == "Local Authority",
-         type_of_tenure != "All",
-         smokes =="Yes"
-  ) %>%
-group_by(type_of_tenure, sm_percent) %>% 
-  summarise(avg_percent = mean(sm_percent, na.rm = TRUE)) %>% 
-  ggplot(aes(type_of_tenure, avg_percent)) +
+  arrange(sm_percent) %>% 
+  head() %>% 
+   ggplot(aes(x = reorder(name, sm_percent), y = sm_percent)) +
   geom_col() +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
-  labs(
-    x = "\nYear",
-    y = "All Smokers (%)\n")
+   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+   labs(
+    x = "\nLocal Authority",
+    y = "2019 Smoking Rate (%)\n")
 ```
+
+
+
+```{r}
+smoking %>%
+  filter(smokes == "Yes",
+         sex == "All") %>%
+  
+  arrange(date_code) %>% 
+  group_by(date_code, age) %>% 
+  summarise(avg_rate = mean(sm_percent)) %>% 
+  
+
+  ggplot(aes(x = date_code, y = avg_rate, group = age, colour = age)) +
+  geom_point() +
+  geom_line() +
+   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+   labs(
+    x = "\nYear",
+    y = "Current Smokers (%)\n"
+)
+
+```
+
+
 

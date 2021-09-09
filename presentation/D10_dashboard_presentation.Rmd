@@ -8,42 +8,30 @@ output: ioslides_presentation
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 ```
+```{r, include=FALSE}
+library(tidyverse)
+library(here)
+```
+```{r, include=FALSE}
+sdmd_combined_plus_zones <- 
+  read_csv(here("clean_data/sdmd_combined_plus_zones.csv"))
 
-## R Markdown
-
-This is an R Markdown presentation. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document.
-
-## Slide with Bullets
-
-- Bullet 1
-- Bullet 2
-- Bullet 3
-
-## Slide with R Output
-
-```{r cars, echo = TRUE}
-summary(cars)
+sdmd_combined_plus_zones %>% 
+distinct(age)
 ```
 
-## Slide with Plot
-
-```{r pressure}
-plot(pressure)
-```
-
-# Title Page
 
 
 
 # Introduction | Jonathan
 
+## Structure of presentation
+
 ## The Brief
 
 ## The Team
 
-## Structure of presentation
+
 
 
 
@@ -119,33 +107,58 @@ industrial areas,  to further reduce the rate of smoking.
 # Key findings - Drug abuse | Jonathan
 
 ## The data
-- Data set used
+- Scottish Drug Misuse 
 - Source
 - Why it was chosen
 
-## Trend
-- Overview
-- Plot
-- Findings / key demographic for business to focus on
+## Trend by gender  
+
+```{r, message=FALSE}
+sdmd_combined_plus_zones %>% 
+  filter(sex != "All") %>% 
+  filter(number_assessed != 0) %>%
+  filter(!is.na(number_assessed)) %>%
+  filter(year != "2013/14") %>% 
+  arrange(year) %>% 
+  group_by(year, sex) %>% 
+  summarise(number_assessed_total = sum(number_assessed)) %>% 
+  ggplot(aes(x = year, y = number_assessed_total, group = sex, colour = sex)) +
+  geom_point() +
+  geom_line()
+```
+  
+## Trend by age group  
+
+```{r}
+sdmd_combined_plus_zones %>% 
+  filter(age != "All" &
+         age != "Unknown" &
+         year != "2013/14") %>% 
+  filter(number_assessed != 0) %>%
+  filter(!is.na(number_assessed)) %>% 
+  arrange(year) %>% 
+  group_by(year, age) %>% 
+  summarise(number_assessed_total = sum(number_assessed), .groups = "drop") %>% 
+  ggplot(aes(x = year, y = number_assessed_total, group = age, colour = age)) +
+  geom_point() +
+  geom_line()
+```
+
 
 ## Rank
 - Overview
-- Plot
+```{r, message=FALSE}
+
+```
+
 - Findings / key areas for business to focus on / disparity between areas
 
-## Map
-- Overview
-- Plot
-- Findings / key areas for business to focus on
 
-
+## Conclusion | Jonathan
+- Recap brief
+- Recap of the main focus points for each of the three areas
 
 # Dashboard Demonstration | Prathiba & Paddy
 
-
-
-## Conclusion | TBC
-- Recap brief
-- Recap of the main focus points for each of the three areas
 
 # Questions

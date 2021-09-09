@@ -43,14 +43,16 @@ distinct(age)
 ## The Data
 
 - What is life expectancy and why it was chosen?
+
 Life expectancy is a statistical measure of the average time an organism is expected to live, based on the year of its birth, its current age and any other demographic factors including sex and geographic area.
 
 - The source of the data
+
 statistics.gov.uk
 
 - Why was this data selected?
  
-## Trend
+## Trend - D&G
 
 - Life expectancy over time for Dumfries & Galloway
 ```{r, message=FALSE}
@@ -77,6 +79,8 @@ life_expectancy_clean %>%
   ) +
   ggtitle("Life Expectancy for Dumfries & Galloway")
 ```
+## Trend - Scotland
+
 - Life expectancy over time for Scotland
 ```{r,message=FALSE}
 life_expectancy_clean %>%
@@ -106,12 +110,6 @@ life_expectancy_clean %>%
 - Overview
 - Plot
 - Findings / key areas for business to focus on / disparity between areas
-
-## Map
-- Overview
-- Plot
-- Findings / key areas for business to focus on
-
 
 
 # Key findings - Smoking | John Paul

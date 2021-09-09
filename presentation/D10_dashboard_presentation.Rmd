@@ -74,13 +74,27 @@ plot(pressure)
 # Key findings - Smoking | John Paul
 
 ## The data
-- Data set used
-- Source
+- The data set used for this was:
+Smoking - Scottish Survey Core Questions
+
+- The data was sourced from:
+https://statistics.gov.scot/resource?uri=http%3A%2F%2Fstatistics.gov.scot%2Fdata%2Fsmoking-sscq
+
 - Why it was chosen
+Originally, Mental Wellbeing was selected for the project but the data quantity
+was not enough for our purposes.  We chose Smoking as two of the Scottish 
+Government's National Performance Framework (NPF) National Indicators are 
+relevant to smoking. There is a strong Public Health focus on reducing the 
+proportion of adults who smoke.
 
 ## Trend
 - Overview
+The overview is generally optimistic.  Whilst numbers are still higher than
+anyone would like, the long term trend shows a steady reduction in all age groups, 
+especially the youngest age group of 16-35.
+
 - Plot
+
 - Findings / key demographic for business to focus on
 
 ## Rank
@@ -90,9 +104,16 @@ plot(pressure)
 
 ## Map
 - Overview
-- Plot
-- Findings / key areas for business to focus on
+There are huge variations around the country, whether they be measured by 
+NHS Health Board or the more granular Local Authority areas.  Poverty is one 
+factor along with an urban/rural divide.  Essentially the areas with the lowest
+proportion of smokers are more rural, and more affluent.  The opposite is also true.
 
+- Plot
+
+- Findings / key areas for business to focus on
+More work needs to be in less affluent areas, especially in the traditional 
+industrial areas,  to further reduce the rate of smoking.
 
 
 # Key findings - Drug abuse | Jonathan

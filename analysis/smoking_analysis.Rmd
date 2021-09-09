@@ -118,6 +118,22 @@ smoking %>%
   summarise(avg_by_tenure = mean(sm_percent, na.rm = TRUE)) %>% 
 filter(avg_by_tenure == max(avg_by_tenure))
   
+  
 ```
 
+```{r}
+smoking %>%
+  filter(type == "Local Authority",
+         type_of_tenure != "All",
+         smokes =="Yes"
+  ) %>%
+group_by(type_of_tenure, sm_percent) %>% 
+  summarise(avg_percent = mean(sm_percent, na.rm = TRUE)) %>% 
+  ggplot(aes(type_of_tenure, avg_percent)) +
+  geom_col() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+  labs(
+    x = "\nYear",
+    y = "All Smokers (%)\n")
+```
 

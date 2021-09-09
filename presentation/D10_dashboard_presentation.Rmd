@@ -14,7 +14,9 @@ library(here)
 ```
 ```{r, include=FALSE}
 sdmd_combined_plus_zones <- 
-  read_csv(here("clean_data/sdmd_combined_plus_zones.csv"))
+  read_csv(here("clean_data/sdmd_combined_plus_zones.csv")) 
+
+smoking <- read_csv(here("clean_data/smoking.csv"))
 
 sdmd_combined_plus_zones %>% 
 distinct(age)
@@ -66,42 +68,119 @@ distinct(age)
 Smoking - Scottish Survey Core Questions
 
 - The data was sourced from:
-https://statistics.gov.scot/resource?uri=http%3A%2F%2Fstatistics.gov.scot%2Fdata%2Fsmoking-sscq
+statistics.gov.uk
 
 - Why it was chosen
-Originally, Mental Wellbeing was selected for the project but the data quantity
-was not enough for our purposes.  We chose Smoking as two of the Scottish 
-Government's National Performance Framework (NPF) National Indicators are 
-relevant to smoking. There is a strong Public Health focus on reducing the 
-proportion of adults who smoke.
+We chose Smoking as two of the Scottish Government's National Performance 
+Framework (NPF)  National Indicators are relevant to smoking. 
+
+There is a strong Public Health focus on reducing the proportion of adults who smoke.
 
 ## Trend
 - Overview
-The overview is generally optimistic.  Whilst numbers are still higher than
-anyone would like, the long term trend shows a steady reduction in all age groups, 
-especially the youngest age group of 16-35.
+
+The overview is optimistic.  
+
+Whilst numbers are still higher than anyone would like, the long term trend 
+shows a steady reduction in all age groups.
 
 - Plot
 
-- Findings / key demographic for business to focus on
+```{r}
+smoking %>%
+  filter(smokes == "Yes",
+         sex == "All") %>%
+  
+  arrange(date_code) %>% 
+  group_by(date_code, age) %>% 
+  summarise(avg_rate = mean(sm_percent)) %>% 
+  
+
+  ggplot(aes(x = date_code, y = avg_rate, group = age, colour = age)) +
+  geom_point() +
+  geom_line() +
+   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+   labs(
+    x = "\nYear",
+    y = "Current Smokers (%)\n"
+)
+```
 
 ## Rank
 - Overview
+
+Where you live could affect whether you smoke or not.  
+
+In some areas you are 300% more likely to smoke than in other areas.
+
 - Plot
+
+```{r}
+#  Highest Smoking rates per Local Authority area, in a 1 year period
+smoking %>% 
+  filter(type == "Local Authority",
+         type_of_tenure == "All",
+         age == "All",
+         household_type == "All",
+         sex == "All",
+         long_term_condition == "All",
+         smokes == "Yes",
+         date_code == "2019"
+  ) %>%
+ group_by(name, date_code, sm_percent) %>% 
+  select(name, smokes, sm_percent) %>% 
+  arrange(desc(sm_percent)) %>% 
+head() %>% 
+   ggplot(aes(x = reorder(name, sm_percent), y = sm_percent)) +
+  geom_col() +
+   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+   labs(
+    x = "\nLocal Authority",
+    y = "2019 Smoking Rate (%)\n")
+```
+
+
+```{r}
+#  Lowest Smoking rates per Local Authority area, in a 1 year period
+smoking %>% 
+  filter(type == "Local Authority",
+         type_of_tenure == "All",
+         age == "All",
+         household_type == "All",
+         sex == "All",
+         long_term_condition == "All",
+         smokes == "Yes",
+         date_code == "2019"
+  ) %>%
+ group_by(name, date_code, sm_percent) %>% 
+  select(name, smokes, sm_percent) %>% 
+  arrange(sm_percent) %>% 
+  head() %>% 
+   ggplot(aes(x = reorder(name, sm_percent), y = sm_percent)) +
+  geom_col() +
+   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+   labs(
+    x = "\nLocal Authority",
+    y = "2019 Smoking Rate (%)\n")
+```
+
 - Findings / key areas for business to focus on / disparity between areas
+
+Where you live dictates how likely you are to smoke.
 
 ## Map
 - Overview
+
 There are huge variations around the country, whether they be measured by 
-NHS Health Board or the more granular Local Authority areas.  Poverty is one 
-factor along with an urban/rural divide.  Essentially the areas with the lowest
-proportion of smokers are more rural, and more affluent.  The opposite is also true.
+NHS Health Board or the more granular Local Authority areas.   
 
-- Plot
+Essentially the areas with the lowest proportion of smokers are more affluent. The 
+opposite is also true. 
+ 
 
-- Findings / key areas for business to focus on
-More work needs to be in less affluent areas, especially in the traditional 
-industrial areas,  to further reduce the rate of smoking.
+- Findings
+
+More work needs to be in less affluent areas to further reduce the rate of smoking.
 
 
 # Key findings - Drug abuse | Jonathan

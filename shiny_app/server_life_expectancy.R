@@ -75,7 +75,7 @@ plot_life_object <- function(data, user_choice) {
 
 select_life_rank_data <- function(sex_input, rank_area_input, select_input) {
   
-  if (select_input == "Top 5"){
+ if (select_input == "Highest 5"){
   life_expectancy_clean %>% 
     filter(type == rank_area_input,
            simd_quintiles == "All",
@@ -102,9 +102,9 @@ select_life_rank_data <- function(sex_input, rank_area_input, select_input) {
 
 # Function to plot the data based on selected data from user choice
 
-plot_life_rank_object <- function(data) {
+plot_life_rank_object <- function(data,select_input) {
   
-  
+  if (select_input == "Highest 5"){
   data %>%
     ggplot() +
     aes(x = reorder(name, le_value), y = le_value, fill = le_value) +
@@ -116,6 +116,22 @@ plot_life_rank_object <- function(data) {
       y = "Life Expectancy (years)\n",
       fill = "Life Expectancy Percentage"
     )+
+    scale_fill_distiller(palette = " YlGn")+
     color_theme()
-  
+  }
+  else {
+    data %>%
+      ggplot() +
+      aes(x = reorder(name, le_value), y = le_value, fill = le_value) +
+      geom_col() +
+      ylim(0, 100) +
+      theme(axis.text.x = element_text(angle = 45, vjust = 0.5, hjust = 1)) +
+      labs(
+        x = "Data Zone",
+        y = "Life Expectancy (years)\n",
+        fill = "Life Expectancy Percentage"
+      )+
+      scale_fill_distiller(palette = "YlOrRd")+
+      color_theme()
+  }
 }

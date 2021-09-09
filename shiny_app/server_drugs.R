@@ -75,11 +75,13 @@ plot_drugs_object <- function(data, user_choice) {
 
 select_drugs_rank_data <- function(sex_input, rank_area_input, select_input) {
   
-  if (select_input == "Top 5"){
+  if (select_input == "Highest 5"){
   sdmd_combined_plus_zones %>%
     filter(type == rank_area_input,
            year == "2018/19",
-           sex == sex_input) %>%
+           sex == sex_input,
+           age == "All")%>%
+    filter(!is.na(number_assessed)) %>% 
     arrange(desc(number_assessed)) %>% 
     head(5)
   }
@@ -87,7 +89,9 @@ select_drugs_rank_data <- function(sex_input, rank_area_input, select_input) {
     sdmd_combined_plus_zones %>%
       filter(type == rank_area_input,
              year == "2018/19",
-             sex == sex_input) %>%
+             sex == sex_input,
+             age == "All")%>%
+      filter(!is.na(number_assessed)) %>% 
       arrange(desc(number_assessed)) %>% 
       tail(5)
     
@@ -96,8 +100,9 @@ select_drugs_rank_data <- function(sex_input, rank_area_input, select_input) {
 
 # Function to plot the data based on selected data from user choice
 
-plot_drugs_rank_object <- function(data) {
+plot_drugs_rank_object <- function(data,select_input) {
   
+  if (select_input == "Highest 5"){
     # Five Highest Areas for drug abuse
     data %>%
       ggplot() +
@@ -108,5 +113,21 @@ plot_drugs_rank_object <- function(data) {
         x = "Data Zone",
         y = "Number of Patients Assessed\n"
       )+
+      scale_fill_distiller(palette = "YlGn")+
       color_theme()
+  }
+  else {
+    # Five Highest Areas for drug abuse
+    data %>%
+      ggplot() +
+      aes(x = reorder(name, number_assessed), y = number_assessed, fill = number_assessed) +
+      geom_col() +
+      theme(axis.text.x = element_text(angle = 45, vjust = 0.5, hjust = 1)) +
+      labs(
+        x = "Data Zone",
+        y = "Number of Patients Assessed\n"
+      )+
+      scale_fill_distiller(palette = "YlOrRd")+
+      color_theme()
+  }
   }

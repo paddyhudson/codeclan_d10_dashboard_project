@@ -37,6 +37,12 @@ ui <- fluidPage(
                       choices = NULL
         )),
       fluidRow(tags$br()),
+      fluidRow(HTML("
+                    <p style='text-align:justify; color:black'>Data shown reflects the latest available data only.</p>
+                    <p style='text-align:justify; color:black'>Life Expectancy: 2017-2019</p>
+                    <p style='text-align:justify; color:black'>Drug Abuse: 2017/18</p>
+                    <p style='text-align:justify; color:black'>Smoking: 2019</p>
+                    ")),
       fluidRow(tags$br())
     ),
     mainPanel(width = 9,

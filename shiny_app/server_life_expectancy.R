@@ -55,6 +55,8 @@ plot_life_object <- function(data, user_choice) {
         colour = "Sex"
       )+
       color_theme()
+    
+    
   }
   else {
     
@@ -116,7 +118,7 @@ plot_life_rank_object <- function(data,select_input) {
       y = "Life Expectancy (years)\n",
       fill = "Life Expectancy Percentage"
     )+
-    scale_fill_distiller(palette = " YlGn")+
+    scale_fill_distiller(palette = "YlGn")+
     color_theme()
   }
   else {

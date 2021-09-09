@@ -129,7 +129,7 @@ plot_sm_rank_object <- function(data, select_input) {
         x = "Name",
         y = "Number of Smokers (%)\n"
       ) +
-    scale_fill_distiller(palette = " YlGn")+
+    scale_fill_distiller(palette = "YlGn")+
     color_theme()
   }
   else {
